@@ -68,20 +68,3 @@ OPTION 2: Animated Typing Header
   <br/>
   <img src="https://nirzak-streak-stats.vercel.app/?user=Rah-Rah-Mitra&theme=tokyonight&hide_border=false" alt="GitHub Streak" />
 </p>
-
----
-
-### 🐍 Here's a fun snake game on my contribution graph!
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Rah-Rah-Mitra/Rah-Rah-Mitra/output/github-contribution-grid-snake.svg" alt="Snake Game on Contribution Graph">
-</p>
-
----
-
-<p align="center">
-  <!-- Your existing visit counter, now centered -->
-  <a href="https://visitcount.itsvg.in">
-    <img src="https://visitcount.itsvg.in/api?id=Rah-Rah-Mitra&icon=0&color=0" alt="Visit Counter"/>
-  </a>
-</p>
