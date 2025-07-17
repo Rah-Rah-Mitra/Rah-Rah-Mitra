@@ -17,7 +17,7 @@ OPTION 2: Animated Typing Header
 
 
 <h1 align="center">Rah-Rah-Mitra</h1>
-<h3 align="center">A Passionate Innovative Develper from Singapore</h3>
+<h3 align="center">A Passionate Innovative Developer from Singapore</h3>
 
 <br>
 
