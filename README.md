@@ -12,7 +12,7 @@ Feel free to use it as inspiration!
 OR 
 OPTION 2: Animated Typing Header 
 (Delete the cat above and uncomment the line below by removing <!-- and -->)
-<p align="center"><a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&pause=1000&color=3397F7¢er=true&vCenter=true&width=435&lines=Hi+there%2C+I'm+Rahmit+Mitra+👋;I'm+a+passionate+Software+Developer;Always+learning+and+growing...;" alt="Typing SVG" /></a></p>
+<p align="center"><a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=30&pause=1000&color=3397F7¢er=true&vCenter=true&width=435&lines=Hi+there%2C+I'm+Rahul+Mitra+👋;I'm+a+passionate+Software+Developer;Always+learning+and+growing...;" alt="Typing SVG" /></a></p>
 
 
 
