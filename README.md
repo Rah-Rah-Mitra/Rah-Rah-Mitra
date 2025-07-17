@@ -1,10 +1,10 @@
 <p align="center"> 
- <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100§ion=header&text=Hi%20there!%20I'm%20Rahul%20Mitra&fontSize=70&fontAlignY=35&animation=fadeIn" alt="Header"/> 
+ <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120§ion=header&text=Hi%20there!%20I'm%20Rahul%20Mitra&fontSize=70&fontAlignY=35&animation=fadeIn" alt="Header"/> 
 </p> 
 
 <div align="center"> 
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&pause=1000&color=3397F7¢er=true&vCenter=true&width=700&height=100&multiline=true&lines=A+passionate+Software+Developer+from+Singapore+%F0%9F%87%B8%F0%9F%87%AC;Always+learning%2C+always+growing...;Let's+build+something+amazing+together!&separator=%3B&font-weight=600)](https://git.io/typing-svg) 
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&pause=1000&color=3397F7¢er=true&vCenter=true&width=700&height=120&multiline=true&lines=A+passionate+Software+Developer+from+Singapore+%F0%9F%87%B8%F0%9F%87%AC;Always+learning%2C+always+growing...;Let's+build+something+amazing+together!&separator=%3B&font-weight=600)](https://git.io/typing-svg) 
 
 </div> 
 
