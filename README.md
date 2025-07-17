@@ -1,6 +1,6 @@
-<p align="center"> 
- <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=80§ion=header&text=Hi%20there!%20I'm%20Rahul%20Mitra&fontSize=70&fontAlignY=35&animation=fadeIn" alt="Header"/> 
-</p> 
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180§ion=header&text=Hi%20there!%20I'm%20Rahul%20Mitra&fontSize=60&fontAlignY=32&animation=fadeIn&desc=Cybersec%20|%20Software%20Engineering%20|%20Data%20Scientist%20﹫🇸🇬&descAlignY=80&descAlign=68" alt="Header"/>
+</p>
 
 <div align="center"> 
 
