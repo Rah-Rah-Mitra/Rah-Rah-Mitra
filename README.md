@@ -1,56 +1,74 @@
-<p align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG9oNGk2M2g2cjQ4NnQ4NTZ0eGh3YWozbGlxbDA4emRjZ2YxZmJ1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qgQUggAC3Pfv687qPC/giphy.gif" width="300" alt="Coding Cat">
-</p>
+<p align="center"> 
+ <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=250§ion=header&text=Hi%20there!%20I'm%20Rahul%20Mitra&fontSize=70&fontAlignY=35&animation=fadeIn" alt="Header"/> 
+</p> 
 
-<p align="center">
-  <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&pause=1000&color=3397F7¢er=true&vCenter=true&width=550&height=70&multiline=true&lines=Hi+there%2C+I'm+Rahul+Mitra+%F0%9F%91%8B;I'm+a+passionate+Software+Developer;Always+learning%2C+always+growing...&separator=%3B&font-weight=600" alt="Typing SVG" />
-  </a>
-</p>
+<div align="center"> 
 
-<h1 align="center">Rah-Rah-Mitra</h1>
-<h3 align="center">A Passionate Innovative Developer from Singapore</h3>
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&pause=1000&color=3397F7¢er=true&vCenter=true&width=690&height=80&multiline=true&lines=A+passionate+Software+Developer+from+Singapore+%F0%9F%87%B8%F0%9F%87%AC;Always+learning%2C+always+growing...;Let's+build+something+amazing+together!&separator=%3B&font-weight=600)](https://git.io/typing-svg) 
 
-<br>
+</div> 
 
-<p align="center">
-  <a href="https://www.linkedin.com/in/rahulmitra-dev/" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
-  </a>
-  <a href="https://rahul-mitra.vercel.app/" target="_blank">
-    <img src="https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=rss&logoColor=white" alt="Portfolio">
-  </a>
-</p>
+--- 
 
----
+### 👨‍💻 **About Me** 
 
-### 💻 Tech Stack
+I'm a passionate and innovative developer with a love for creating efficient and scalable software solutions. I'm always eager to learn new technologies and apply them to solve real-world problems. 
 
-<p align="center">
-  <a href="https://www.java.com" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original-wordmark.svg" alt="Java" width="50" height="50"/>
-  </a>
-  <a href="https://www.python.org" target="_blank" rel="noreferrer">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original-wordmark.svg" alt="Python" width="50" height="50"/>
-  </a>
-  <a href="https://spring.io/" target="_blank" rel="noreferrer"> 
-    <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="spring" width="50" height="50"/> 
-  </a>
-  <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> 
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="50" height="50"/> 
-  </a>
-  <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> 
-    <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="50" height="50"/> 
-  </a>
-</p>
+<p align="center"> 
+ <a href="https://www.linkedin.com/in/rahulmitra-dev/" target="_blank"> 
+   <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"> 
+ </a> 
+ <a href="https://rahul-mitra.vercel.app/" target="_blank"> 
+   <img src="https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=rss&logoColor=white" alt="Portfolio"> 
+ </a> 
+ <a href="https://twitter.com/your-twitter-handle" target="_blank"> 
+   <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"> 
+ </a> 
+</p> 
 
----
+--- 
 
-### 📊 My GitHub Stats
+### 🛠️ **Tech Stack** 
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Rah-Rah-Mitra&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=true" alt="Rah-Rah-Mitra's GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Rah-Rah-Mitra&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=true&layout=compact" alt="Top Languages" />
-  <br/>
-  <img src="https://nirzak-streak-stats.vercel.app/?user=Rah-Rah-Mitra&theme=tokyonight&hide_border=false" alt="GitHub Streak" />
-</p>
+<p align="center"> 
+ <a href="https://skillicons.dev"> 
+   <img src="https://skillicons.dev/icons?i=java,python,spring,docker,git,kubernetes,aws,mysql,postgres,redis,mongodb,idea,vscode&perline=6" /> 
+ </a> 
+</p> 
+
+--- 
+
+### 📊 **My GitHub Stats** 
+
+<p align="center"> 
+ <img src="https://github-readme-stats.vercel.app/api?username=Rah-Rah-Mitra&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=true" alt="Rah-Rah-Mitra's GitHub Stats" /> 
+ <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Rah-Rah-Mitra&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=true&layout=compact" alt="Top Languages" /> 
+ <br/> 
+ <img src="https://github-readme-streak-stats.herokuapp.com/?user=Rah-Rah-Mitra&theme=tokyonight&hide_border=false" alt="GitHub Streak" /> 
+</p> 
+
+<p align="center"> 
+ <img src="https://github-readme-activity-graph.vercel.app/graph?username=Rah-Rah-Mitra&bg_color=1a1b27&color=79ff97&line=79ff97&point=79ff97&area=true&hide_border=true" alt="GitHub Activity Graph" /> 
+</p> 
+
+--- 
+
+### 🏆 **GitHub Trophies** 
+
+<p align="center"> 
+ <img src="https://github-profile-trophy.vercel.app/?username=Rah-Rah-Mitra&theme=tokyonight&row=1&column=7" alt="GitHub Trophies" /> 
+</p> 
+
+--- 
+
+### 🐍 **Snake Eating My Contributions Graph** 
+
+<p align="center"> 
+ <img src="https://raw.githubusercontent.com/Rah-Rah-Mitra/Rah-Rah-Mitra/output/github-contribution-grid-snake.svg" alt="Snake" /> 
+</p> 
+
+<p align="center"> 
+ <a href="https://github.com/Rah-Rah-Mitra"> 
+   <img src="https://komarev.com/ghpvc/?username=Rah-Rah-Mitra&label=Profile%20views&color=brightgreen&style=flat-square" alt="Profile views" /> 
+ </a> 
+</p> 
