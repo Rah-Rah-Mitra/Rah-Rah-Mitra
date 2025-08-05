@@ -58,17 +58,3 @@ I'm a passionate and innovative developer with a love for creating efficient and
 <p align="center"> 
  <img src="https://github-profile-trophy.vercel.app/?username=Rah-Rah-Mitra&theme=tokyonight&row=1&column=7" alt="GitHub Trophies" /> 
 </p> 
-
---- 
-
-### 🐍 **Snake Eating My Contributions Graph** 
-
-<p align="center"> 
- <img src="https://raw.githubusercontent.com/Rah-Rah-Mitra/Rah-Rah-Mitra/output/github-contribution-grid-snake.svg" alt="Snake" /> 
-</p> 
-
-<p align="center"> 
- <a href="https://github.com/Rah-Rah-Mitra"> 
-   <img src="https://komarev.com/ghpvc/?username=Rah-Rah-Mitra&label=Profile%20views&color=brightgreen&style=flat-square" alt="Profile views" /> 
- </a> 
-</p> 
