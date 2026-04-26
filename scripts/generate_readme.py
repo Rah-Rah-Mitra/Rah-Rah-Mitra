@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import sys
 from pathlib import Path
@@ -22,9 +23,12 @@ LINKEDIN = "https://www.linkedin.com/in/rahulmitra-dev/"
 def build_readme(username: str, user: dict[str, Any]) -> str:
     bio = _clean_text(user.get("bio") or DEFAULT_BIO)
     portfolio = _clean_url(user.get("blog")) or DEFAULT_PORTFOLIO
+    hero_src = _asset_src("assets/hero-geometry.svg")
+    contribution_src = _asset_src("assets/contribution-3d.svg")
+    stats_src = _asset_src("assets/github-stats.svg")
 
     return f'''<div align="center">
-  <img src="assets/hero-geometry.svg" width="100%" alt="Custom geometric animated profile banner" />
+  <img src="{hero_src}" width="100%" alt="Custom geometric animated profile banner" />
 </div>
 
 {bio}
@@ -34,13 +38,13 @@ def build_readme(username: str, user: dict[str, Any]) -> str:
 ## Contributions
 
 <p align="center">
-  <img src="assets/contribution-3d.svg" width="100%" alt="3D contribution graph" />
+  <img src="{contribution_src}" width="100%" alt="3D contribution graph" />
 </p>
 
 ## Profile Snapshot
 
 <p align="center">
-  <img src="assets/github-stats.svg" width="100%" alt="Custom GitHub profile insights with geometric animation" />
+  <img src="{stats_src}" width="100%" alt="Custom GitHub profile insights with geometric animation" />
 </p>
 '''
 
@@ -77,6 +81,14 @@ def _clean_text(value: str) -> str:
 def _clean_url(value: str | None) -> str:
     value = (value or "").strip()
     return value if value.startswith(("http://", "https://")) else ""
+
+
+def _asset_src(path: str) -> str:
+    asset = Path(path)
+    if not asset.exists():
+        return path
+    digest = hashlib.sha256(asset.read_bytes()).hexdigest()[:12]
+    return f"{path}?v={digest}"
 
 
 if __name__ == "__main__":
