@@ -18,6 +18,7 @@ from typing import Any
 API_BASE = "https://api.github.com"
 CONTRIB_URL = "https://github.com/users/{username}/contributions"
 COUNT_RE = re.compile(r'data-count="(\d+)"')
+API_VERSION = "2026-03-10"
 
 
 def _get_json(url: str, token: str | None = None) -> Any:
@@ -26,6 +27,7 @@ def _get_json(url: str, token: str | None = None) -> Any:
         headers={
             "Accept": "application/vnd.github+json",
             "User-Agent": "rah-rah-mitra-readme-generator",
+            "X-GitHub-Api-Version": API_VERSION,
             **({"Authorization": f"Bearer {token}"} if token else {}),
         },
     )
@@ -55,8 +57,14 @@ def fetch_events(username: str, token: str | None = None) -> list[dict[str, Any]
     return _get_json(f"{API_BASE}/users/{urllib.parse.quote(username)}/events/public?per_page=100", token)
 
 
-def fetch_contributions_total(username: str) -> int:
-    req = urllib.request.Request(CONTRIB_URL.format(username=username), headers={"User-Agent": "stats-card"})
+def fetch_contributions_total(username: str, token: str | None = None) -> int:
+    req = urllib.request.Request(
+        CONTRIB_URL.format(username=username),
+        headers={
+            "User-Agent": "stats-card",
+            **({"Authorization": f"Bearer {token}"} if token else {}),
+        },
+    )
     with urllib.request.urlopen(req, timeout=30) as response:
         text = response.read().decode("utf-8")
     return sum(int(v) for v in COUNT_RE.findall(text))
@@ -161,7 +169,7 @@ def main() -> int:
             user = fetch_user(args.username, args.token)
             repos = fetch_repos(args.username, args.token)
             events = fetch_events(args.username, args.token)
-            contribs = fetch_contributions_total(args.username)
+            contribs = fetch_contributions_total(args.username, args.token)
             metrics = summarize(repos, events, contribs)
         except urllib.error.HTTPError as exc:
             print(f"GitHub API request failed: HTTP {exc.code}", file=sys.stderr)

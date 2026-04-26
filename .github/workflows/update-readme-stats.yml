@@ -21,14 +21,20 @@ jobs:
           python-version: '3.11'
 
       - name: Generate SVG stats card
+        env:
+          GH_STATS_TOKEN: ${{ secrets.GH_ACCESS_TK_FG != '' && secrets.GH_ACCESS_TK_FG || secrets.GITHUB_TOKEN }}
         run: |
           python scripts/generate_stats_svg.py \
             --username Rah-Rah-Mitra \
             --output assets/github-stats.svg \
-            --token "${{ secrets.GITHUB_TOKEN }}"
+            --token "${GH_STATS_TOKEN}"
+          python scripts/generate_contribution_3d_svg.py \
+            --username Rah-Rah-Mitra \
+            --output assets/contribution-3d.svg \
+            --token "${GH_STATS_TOKEN}"
 
       - name: Commit updated stats
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore(readme): refresh custom github stats card'
-          file_pattern: assets/github-stats.svg
+          commit_message: 'chore(readme): refresh generated profile assets'
+          file_pattern: assets/github-stats.svg assets/contribution-3d.svg
