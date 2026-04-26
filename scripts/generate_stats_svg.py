@@ -4,110 +4,68 @@
 from __future__ import annotations
 
 import argparse
-import json
 import os
-import re
 import sys
-import urllib.error
-import urllib.parse
-import urllib.request
 from collections import Counter
+from html import escape
 from pathlib import Path
 from typing import Any
 
-API_BASE = "https://api.github.com"
-CONTRIB_URL = "https://github.com/users/{username}/contributions"
-COUNT_RE = re.compile(r'data-count="(\d+)"')
-API_VERSION = "2026-03-10"
+from github_profile_data import (
+    ContributionFetchError,
+    fetch_contribution_snapshot,
+    fetch_events,
+    fetch_repos,
+    fetch_user,
+    owned_work_repos,
+)
 
 
-def _get_json(url: str, token: str | None = None) -> Any:
-    req = urllib.request.Request(
-        url,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "User-Agent": "rah-rah-mitra-readme-generator",
-            "X-GitHub-Api-Version": API_VERSION,
-            **({"Authorization": f"Bearer {token}"} if token else {}),
-        },
-    )
-    with urllib.request.urlopen(req, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
-
-
-def fetch_user(username: str, token: str | None = None) -> dict[str, Any]:
-    return _get_json(f"{API_BASE}/users/{urllib.parse.quote(username)}", token)
-
-
-def fetch_repos(username: str, token: str | None = None) -> list[dict[str, Any]]:
-    repos: list[dict[str, Any]] = []
-    page = 1
-    while True:
-        url = f"{API_BASE}/users/{urllib.parse.quote(username)}/repos?type=owner&sort=updated&per_page=100&page={page}"
-        batch = _get_json(url, token)
-        if not batch:
-            return repos
-        repos.extend(batch)
-        if len(batch) < 100:
-            return repos
-        page += 1
-
-
-def fetch_events(username: str, token: str | None = None) -> list[dict[str, Any]]:
-    return _get_json(f"{API_BASE}/users/{urllib.parse.quote(username)}/events/public?per_page=100", token)
-
-
-def fetch_contributions_total(username: str, token: str | None = None) -> int:
-    req = urllib.request.Request(
-        CONTRIB_URL.format(username=username),
-        headers={
-            "User-Agent": "stats-card",
-            **({"Authorization": f"Bearer {token}"} if token else {}),
-        },
-    )
-    with urllib.request.urlopen(req, timeout=30) as response:
-        text = response.read().decode("utf-8")
-    return sum(int(v) for v in COUNT_RE.findall(text))
-
-
-def summarize(repos: list[dict[str, Any]], events: list[dict[str, Any]], contributions: int) -> dict[str, Any]:
-    language_counter = Counter(repo.get("language") for repo in repos if repo.get("language"))
+def summarize(
+    username: str,
+    repos: list[dict[str, Any]],
+    events: list[dict[str, Any]],
+    contributions: int,
+) -> dict[str, Any]:
+    work_repos = owned_work_repos(username, repos)
+    language_counter = Counter(repo.get("language") for repo in work_repos if repo.get("language"))
     top_languages = language_counter.most_common(3)
-    recent_commits = 0
-    for ev in events:
-        if ev.get("type") == "PushEvent":
-            recent_commits += len(ev.get("payload", {}).get("commits", []))
+    recent_pushes = 0
+    for event in events:
+        if event.get("type") == "PushEvent":
+            recent_pushes += 1
 
     return {
-        "public_repos": len(repos),
-        "total_stars": sum(repo.get("stargazers_count", 0) for repo in repos),
-        "total_forks": sum(repo.get("forks_count", 0) for repo in repos),
-        "total_issues": sum(repo.get("open_issues_count", 0) for repo in repos),
-        "language_label": " · ".join(f"{lang} ({count})" for lang, count in top_languages) or "N/A",
+        "owned_repos": len(work_repos),
+        "total_stars": sum(repo.get("stargazers_count", 0) for repo in work_repos),
+        "total_forks": sum(repo.get("forks_count", 0) for repo in work_repos),
+        "total_issues": sum(repo.get("open_issues_count", 0) for repo in work_repos),
+        "language_label": " / ".join(f"{lang} ({count})" for lang, count in top_languages) or "N/A",
         "contributions": contributions,
-        "recent_commits": recent_commits,
+        "recent_pushes": recent_pushes,
     }
 
 
 def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offline: bool) -> str:
-    name = user.get("name") or username
+    name = escape(user.get("name") or username)
 
     rows = [
         ("Followers", user.get("followers", 0)),
-        ("Public Repos", metrics["public_repos"]),
+        ("Owned Repos", metrics["owned_repos"]),
         ("Total Stars", metrics["total_stars"]),
         ("Contributions (year)", metrics["contributions"]),
-        ("Recent Commits", metrics["recent_commits"]),
+        ("Recent Pushes", metrics["recent_pushes"]),
         ("Open Issues", metrics["total_issues"]),
     ]
 
     row_svg = []
-    for i, (k, v) in enumerate(rows):
+    for i, (key, value) in enumerate(rows):
         y = 126 + i * 28
-        row_svg.append(f'<text x="78" y="{y}" fill="#5eead4" font-size="19" font-weight="600">{k}:</text>')
-        row_svg.append(f'<text x="360" y="{y}" fill="#e2e8f0" font-size="19" font-weight="700">{v}</text>')
+        row_svg.append(f'<text x="78" y="{y}" fill="#5eead4" font-size="19" font-weight="600">{key}:</text>')
+        row_svg.append(f'<text x="360" y="{y}" fill="#e2e8f0" font-size="19" font-weight="700">{value}</text>')
 
     note = "Offline preview" if offline else "Live profile snapshot"
+    languages = escape(metrics["language_label"])
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="980" height="450" viewBox="0 0 980 450" role="img" aria-labelledby="title desc">
   <title id="title">{name} GitHub stats</title>
@@ -127,7 +85,7 @@ def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offl
 
   <text x="76" y="88" fill="#7fb0ff" font-size="30" font-weight="700">{name}'s GitHub Stats</text>
   {''.join(row_svg)}
-  <text x="78" y="286" fill="#67e8f9" font-size="16">Top languages: {metrics['language_label']}</text>
+  <text x="78" y="286" fill="#67e8f9" font-size="16">Top owned-work languages: {languages}</text>
 
   <text x="650" y="95" fill="#7fb0ff" font-size="28" font-weight="700">Signal</text>
   <circle cx="783" cy="172" r="66" fill="none" stroke="#2b3f75" stroke-width="10"/>
@@ -138,7 +96,7 @@ def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offl
   <text x="196" y="360" fill="#7fb0ff" font-size="44" font-weight="700">{metrics['contributions']}</text>
   <text x="196" y="396" fill="#93c5fd" font-size="22">Total Contributions</text>
   <text x="536" y="360" fill="#7fb0ff" font-size="44" font-weight="700">{metrics['total_stars']}</text>
-  <text x="536" y="396" fill="#93c5fd" font-size="22">Total Stars</text>
+  <text x="536" y="396" fill="#93c5fd" font-size="22">Owned Repo Stars</text>
 
   <text x="40" y="435" fill="#64748b" font-size="14">{note}</text>
 </svg>
@@ -149,33 +107,33 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Generate custom GitHub stats SVG")
     parser.add_argument("--username", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--token", default=os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN"))
+    parser.add_argument("--token", default=os.getenv("GH_STATS_TOKEN") or os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN"))
     parser.add_argument("--offline", action="store_true")
     args = parser.parse_args()
 
     if args.offline:
         user = {"name": args.username, "followers": 0}
         metrics = {
-            "public_repos": 0,
+            "owned_repos": 0,
             "total_stars": 0,
             "total_forks": 0,
             "total_issues": 0,
             "language_label": "N/A",
             "contributions": 0,
-            "recent_commits": 0,
+            "recent_pushes": 0,
         }
     else:
         try:
             user = fetch_user(args.username, args.token)
             repos = fetch_repos(args.username, args.token)
             events = fetch_events(args.username, args.token)
-            contribs = fetch_contributions_total(args.username, args.token)
-            metrics = summarize(repos, events, contribs)
-        except urllib.error.HTTPError as exc:
-            print(f"GitHub API request failed: HTTP {exc.code}", file=sys.stderr)
+            snapshot = fetch_contribution_snapshot(args.username, args.token)
+            metrics = summarize(args.username, repos, events, snapshot.total)
+        except ContributionFetchError as exc:
+            print(f"GitHub contribution request failed: {exc}", file=sys.stderr)
             return 1
-        except urllib.error.URLError as exc:
-            print(f"GitHub API request failed: {exc.reason}", file=sys.stderr)
+        except OSError as exc:
+            print(f"GitHub request failed: {exc}", file=sys.stderr)
             return 1
 
     svg = build_svg(args.username, user, metrics, args.offline)

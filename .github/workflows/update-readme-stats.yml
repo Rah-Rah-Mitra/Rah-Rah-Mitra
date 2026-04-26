@@ -3,14 +3,19 @@ name: Update custom README stats
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 4 * * *'
+    - cron: '7/10 * * * *'
 
 permissions:
   contents: write
 
+concurrency:
+  group: readme-profile-refresh
+  cancel-in-progress: true
+
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,9 +25,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Generate SVG stats card
+      - name: Generate README profile assets
         env:
-          GH_STATS_TOKEN: ${{ secrets.GH_ACCESS_TK_FG != '' && secrets.GH_ACCESS_TK_FG || secrets.GITHUB_TOKEN }}
+          GH_STATS_TOKEN: ${{ secrets.GH_ACCESS_TK_FG || github.token }}
         run: |
           python scripts/generate_stats_svg.py \
             --username Rah-Rah-Mitra \
@@ -32,9 +37,13 @@ jobs:
             --username Rah-Rah-Mitra \
             --output assets/contribution-3d.svg \
             --token "${GH_STATS_TOKEN}"
+          python scripts/generate_readme.py \
+            --username Rah-Rah-Mitra \
+            --output README.md \
+            --token "${GH_STATS_TOKEN}"
 
       - name: Commit updated stats
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore(readme): refresh generated profile assets'
-          file_pattern: assets/github-stats.svg assets/contribution-3d.svg
+          file_pattern: README.md assets/github-stats.svg assets/contribution-3d.svg

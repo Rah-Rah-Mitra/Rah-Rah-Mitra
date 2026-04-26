@@ -17,14 +17,19 @@ jobs:
           python-version: '3.11'
 
       - name: Lint scripts (compile)
-        run: python -m py_compile scripts/generate_stats_svg.py scripts/generate_contribution_3d_svg.py
+        run: python -m py_compile scripts/*.py
+
+      - name: Run parser tests
+        run: python -m unittest discover -s tests
 
       - name: Regenerate SVG assets (offline-safe)
         run: |
           python scripts/generate_stats_svg.py --username Rah-Rah-Mitra --output assets/github-stats.svg --offline
           python scripts/generate_contribution_3d_svg.py --username Rah-Rah-Mitra --output assets/contribution-3d.svg --offline
+          python scripts/generate_readme.py --username Rah-Rah-Mitra --output "$RUNNER_TEMP/README.md" --offline
 
       - name: Validate README references
         run: |
+          grep -n "assets/hero-geometry.svg" README.md
           grep -n "assets/github-stats.svg" README.md
           grep -n "assets/contribution-3d.svg" README.md
