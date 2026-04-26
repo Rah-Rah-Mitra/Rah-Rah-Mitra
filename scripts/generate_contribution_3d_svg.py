@@ -4,21 +4,28 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import urllib.error
 import urllib.request
 from pathlib import Path
 
 SOURCE_TMPL = "https://github.com/users/{username}/contributions"
+API_VERSION = "2026-03-10"
 RECT_RE = re.compile(
     r'<rect[^>]*data-date="(?P<date>[^"]+)"[^>]*data-level="(?P<level>[0-4])"[^>]*x="(?P<x>\d+)"[^>]*y="(?P<y>\d+)"[^>]*/?>'
 )
 
 
-def fetch_contribution_svg(username: str) -> str:
+def fetch_contribution_svg(username: str, token: str | None = None) -> str:
     req = urllib.request.Request(
         SOURCE_TMPL.format(username=username),
-        headers={"User-Agent": "rah-rah-mitra-contrib-graph"},
+        headers={
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "rah-rah-mitra-contrib-graph",
+            "X-GitHub-Api-Version": API_VERSION,
+            **({"Authorization": f"Bearer {token}"} if token else {}),
+        },
     )
     with urllib.request.urlopen(req, timeout=30) as response:
         return response.read().decode("utf-8")
@@ -140,6 +147,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Generate a 3D contribution graph SVG")
     parser.add_argument("--username", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--token", default=os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN"))
     parser.add_argument("--offline", action="store_true")
     args = parser.parse_args()
 
@@ -148,7 +156,9 @@ def main() -> int:
         cells = offline_cells()
     else:
         try:
-            cells = parse_cells(fetch_contribution_svg(args.username))
+            cells = parse_cells(fetch_contribution_svg(args.username, args.token))
+        except urllib.error.HTTPError as exc:
+            print(f"Failed to fetch contributions (HTTP {exc.code}); falling back to empty graph.")
         except urllib.error.URLError as exc:
             print(f"Failed to fetch contributions ({exc}); falling back to empty graph.")
 
