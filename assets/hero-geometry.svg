@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="260" viewBox="0 0 1000 260" role="img" aria-labelledby="title desc">
+  <title id="title">Rahul Mitra geometric header</title>
+  <desc id="desc">Animated geometric banner for README profile</desc>
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="260" rx="26" fill="url(#g)"/>
+
+  <g fill="none" stroke="url(#beam)" stroke-width="2" opacity="0.9">
+    <polygon points="80,190 200,45 320,190">
+      <animateTransform attributeName="transform" type="rotate" from="0 200 130" to="360 200 130" dur="20s" repeatCount="indefinite"/>
+    </polygon>
+    <polygon points="680,205 770,55 860,205">
+      <animateTransform attributeName="transform" type="rotate" from="360 770 130" to="0 770 130" dur="16s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+
+  <circle cx="500" cy="128" r="75" fill="none" stroke="#334155" stroke-width="18"/>
+  <circle cx="500" cy="128" r="75" fill="none" stroke="#22d3ee" stroke-width="12" stroke-linecap="round" stroke-dasharray="180 350">
+    <animateTransform attributeName="transform" type="rotate" from="0 500 128" to="360 500 128" dur="7s" repeatCount="indefinite"/>
+  </circle>
+
+  <text x="500" y="118" font-size="35" fill="#e2e8f0" font-family="Segoe UI, Arial" font-weight="700" text-anchor="middle">Rahul Mitra</text>
+  <text x="500" y="148" font-size="16" fill="#93c5fd" font-family="Segoe UI, Arial" text-anchor="middle">Cybersecurity • Software Engineering • Data Science</text>
+</svg>

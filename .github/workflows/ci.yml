@@ -1,0 +1,24 @@
+name: README CI
+
+on:
+  pull_request:
+  push:
+    branches: ["**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Regenerate custom card
+        run: python scripts/generate_stats_svg.py --username Rah-Rah-Mitra --output assets/github-stats.svg
+
+      - name: Ensure README references custom card
+        run: rg -n "assets/github-stats.svg" README.md
