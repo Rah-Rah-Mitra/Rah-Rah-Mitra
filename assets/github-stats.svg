@@ -15,7 +15,7 @@
   <line x1="490" y1="326" x2="490" y2="408" stroke="#334155" stroke-width="2"/>
 
   <text x="76" y="88" fill="#7fb0ff" font-size="30" font-weight="700">Rahul Mitra's GitHub Stats</text>
-  <text x="78" y="126" fill="#5eead4" font-size="19" font-weight="600">Followers:</text><text x="360" y="126" fill="#e2e8f0" font-size="19" font-weight="700">4</text><text x="78" y="154" fill="#5eead4" font-size="19" font-weight="600">Owned Repos:</text><text x="360" y="154" fill="#e2e8f0" font-size="19" font-weight="700">11</text><text x="78" y="182" fill="#5eead4" font-size="19" font-weight="600">Total Stars:</text><text x="360" y="182" fill="#e2e8f0" font-size="19" font-weight="700">1</text><text x="78" y="210" fill="#5eead4" font-size="19" font-weight="600">Contributions (year):</text><text x="360" y="210" fill="#e2e8f0" font-size="19" font-weight="700">935</text><text x="78" y="238" fill="#5eead4" font-size="19" font-weight="600">Recent Pushes:</text><text x="360" y="238" fill="#e2e8f0" font-size="19" font-weight="700">38</text><text x="78" y="266" fill="#5eead4" font-size="19" font-weight="600">Open Issues:</text><text x="360" y="266" fill="#e2e8f0" font-size="19" font-weight="700">2</text>
+  <text x="78" y="126" fill="#5eead4" font-size="19" font-weight="600">Followers:</text><text x="360" y="126" fill="#e2e8f0" font-size="19" font-weight="700">4</text><text x="78" y="154" fill="#5eead4" font-size="19" font-weight="600">Owned Repos:</text><text x="360" y="154" fill="#e2e8f0" font-size="19" font-weight="700">11</text><text x="78" y="182" fill="#5eead4" font-size="19" font-weight="600">Total Stars:</text><text x="360" y="182" fill="#e2e8f0" font-size="19" font-weight="700">1</text><text x="78" y="210" fill="#5eead4" font-size="19" font-weight="600">Contributions (year):</text><text x="360" y="210" fill="#e2e8f0" font-size="19" font-weight="700">936</text><text x="78" y="238" fill="#5eead4" font-size="19" font-weight="600">Recent Pushes:</text><text x="360" y="238" fill="#e2e8f0" font-size="19" font-weight="700">39</text><text x="78" y="266" fill="#5eead4" font-size="19" font-weight="600">Open Issues:</text><text x="360" y="266" fill="#e2e8f0" font-size="19" font-weight="700">2</text>
   <text x="78" y="286" fill="#67e8f9" font-size="16">Top owned-work languages: Python (4) / Rust (2) / Jupyter Notebook (2)</text>
 
   <text x="650" y="95" fill="#7fb0ff" font-size="28" font-weight="700">Signal</text>
@@ -24,7 +24,7 @@
     <animateTransform attributeName="transform" type="rotate" from="0 783 172" to="360 783 172" dur="7s" repeatCount="indefinite"/>
   </circle>
 
-  <text x="196" y="360" fill="#7fb0ff" font-size="44" font-weight="700">935</text>
+  <text x="196" y="360" fill="#7fb0ff" font-size="44" font-weight="700">936</text>
   <text x="196" y="396" fill="#93c5fd" font-size="22">Total Contributions</text>
   <text x="536" y="360" fill="#7fb0ff" font-size="44" font-weight="700">1</text>
   <text x="536" y="396" fill="#93c5fd" font-size="22">Owned Repo Stars</text>

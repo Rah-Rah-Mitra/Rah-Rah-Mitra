@@ -75,7 +75,7 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
     graph_w = max_x - min_x
     graph_h = max_y - min_y
     origin_x = (width - graph_w) / 2 - min_x
-    origin_y = (height - graph_h) / 2 - min_y + 26
+    origin_y = (height - graph_h) / 2 - min_y - 8
 
     bars = []
     positioned = []
@@ -91,7 +91,7 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
         bar_symbol(level, cell_w, cell_d, style[3], style[0], style[1], style[2]) for level, style in shades.items()
     )
     legend_items = []
-    lx, ly = 784, 72
+    lx, ly = 930, 66
     for level in range(5):
         top, _, _, _, label = shades[level]
         legend_items.append(
@@ -122,7 +122,7 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
   <text x="34" y="110" fill="#5eead4" font-size="18" font-weight="700">{total:,} contributions</text>
   <text x="34" y="134" fill="#cbd5e1" font-size="14">{active_days} active days in the visible calendar</text>
   <text x="34" y="158" fill="#64748b" font-size="13">{escape(date_range)}</text>
-  <g transform="translate(988 34)">
+  <g transform="translate(34 398)">
     <rect width="74" height="26" rx="13" fill="#052e2b" stroke="#22d3ee" opacity="0.92">
       <animate attributeName="opacity" values="0.62;1;0.62" dur="2.2s" repeatCount="indefinite"/>
     </rect>
@@ -131,12 +131,12 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
     </circle>
     <text x="28" y="17" fill="#d1fae5" font-size="12" font-weight="700">{live_label}</text>
   </g>
-  <text x="784" y="56" fill="#93c5fd" font-size="13">Legend</text>
+  <text x="930" y="50" fill="#93c5fd" font-size="13">Legend</text>
   {''.join(legend_items)}
-  <g id="month-labels">{''.join(month_labels)}</g>
-  <g id="contribution-bars">
+  <g id="contribution-graph">
     <animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 0" dur="8s" repeatCount="indefinite"/>
     {''.join(bars)}
+    <g id="month-labels">{''.join(month_labels)}</g>
   </g>
 </svg>
 '''
@@ -167,13 +167,22 @@ def build_month_labels(positioned: list[dict[str, object]]) -> list[str]:
     if not months:
         return []
 
+    front_edge_by_col: dict[int, dict[str, object]] = {}
+    for item in positioned:
+        col = int(item["col"])
+        current = front_edge_by_col.get(col)
+        if current is None or int(item["row"]) > int(current["row"]):
+            front_edge_by_col[col] = item
+
     step = max(1, round(len(months) / 6))
     selected = months[::step][:6]
     labels = []
-    for index, item in enumerate(selected):
+    for item in selected:
         parsed = item["parsed"]
+        axis_point = front_edge_by_col.get(int(item["col"]), item)
         labels.append(
-            f'<text x="{34 + index * 55}" y="184" fill="#64748b" font-size="11">'
+            f'<text x="{fmt(float(axis_point["screen_x"]) + 8)}" y="{fmt(float(axis_point["screen_y"]) + 18)}" '
+            'fill="#64748b" font-size="11" text-anchor="middle">'
             f"{parsed.strftime('%b')}"
             "</text>"
         )
