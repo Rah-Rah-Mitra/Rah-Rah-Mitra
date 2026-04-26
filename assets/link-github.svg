@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210" height="52" viewBox="0 0 210 52" role="img" aria-labelledby="title desc" font-family="Segoe UI, Arial, sans-serif">
+  <title id="title">GitHub link button</title>
+  <desc id="desc">Animated button linking to Rahul Mitra's GitHub profile.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="208" height="50" rx="15" fill="url(#bg)" stroke="url(#neon)" stroke-width="2" stroke-opacity="0.76">
+    <animate attributeName="stroke-opacity" values="0.48;0.95;0.48" dur="4.8s" repeatCount="indefinite"/>
+  </rect>
+  <g stroke="#1e293b" stroke-width="1" opacity="0.62">
+    <path d="M18 14H192M18 38H192M54 8V44M114 8V44M174 8V44"/>
+  </g>
+  <g transform="translate(28 16)" fill="none" stroke="#5eead4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 10c0-5 4-9 9-9s9 4 9 9c0 4-2 7-6 8"/>
+    <path d="M9 18c-4-1-6-4-6-8"/>
+    <path d="M8 20h8"/>
+  </g>
+  <text x="72" y="31" fill="#e2e8f0" font-size="17" font-weight="800">GitHub</text>
+  <text x="146" y="31" fill="#93c5fd" font-size="14" font-weight="700">@Rah-Rah</text>
+</svg>

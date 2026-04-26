@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210" height="52" viewBox="0 0 210 52" role="img" aria-labelledby="title desc" font-family="Segoe UI, Arial, sans-serif">
+  <title id="title">LinkedIn link button</title>
+  <desc id="desc">Animated button linking to Rahul Mitra's LinkedIn profile.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="208" height="50" rx="15" fill="url(#bg)" stroke="url(#neon)" stroke-width="2" stroke-opacity="0.76">
+    <animate attributeName="stroke-opacity" values="0.48;0.95;0.48" dur="5.6s" repeatCount="indefinite"/>
+  </rect>
+  <g stroke="#1e293b" stroke-width="1" opacity="0.62">
+    <path d="M18 14H192M18 38H192M54 8V44M114 8V44M174 8V44"/>
+  </g>
+  <g transform="translate(28 15)">
+    <rect x="0" y="0" width="24" height="24" rx="6" fill="#0f172a" stroke="#5eead4" stroke-width="2"/>
+    <text x="12" y="17" text-anchor="middle" fill="#93c5fd" font-size="15" font-weight="900">in</text>
+  </g>
+  <text x="72" y="31" fill="#e2e8f0" font-size="17" font-weight="800">LinkedIn</text>
+  <text x="156" y="31" fill="#93c5fd" font-size="14" font-weight="700">Profile</text>
+</svg>
