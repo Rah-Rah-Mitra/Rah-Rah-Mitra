@@ -128,6 +128,14 @@ def offline_cells():
     return cells
 
 
+def empty_cells(cols: int = 24, rows: int = 7):
+    cells = []
+    for col in range(cols):
+        for row in range(rows):
+            cells.append({"x": col * 13, "y": row * 13, "level": 0, "date": "unavailable"})
+    return cells
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate a 3D contribution graph SVG")
     parser.add_argument("--username", required=True)
@@ -135,15 +143,18 @@ def main() -> int:
     parser.add_argument("--offline", action="store_true")
     args = parser.parse_args()
 
-    try:
-        cells = offline_cells() if args.offline else parse_cells(fetch_contribution_svg(args.username))
-    except urllib.error.URLError as exc:
-        print(f"Failed to fetch contributions: {exc}")
-        return 1
+    cells = []
+    if args.offline:
+        cells = offline_cells()
+    else:
+        try:
+            cells = parse_cells(fetch_contribution_svg(args.username))
+        except urllib.error.URLError as exc:
+            print(f"Failed to fetch contributions ({exc}); falling back to empty graph.")
 
     if not cells:
-        print("No contribution cells found.")
-        return 1
+        print("No contribution cells found; writing an empty no-activity graph.")
+        cells = empty_cells()
 
     svg = build_svg(args.username, cells, args.offline)
     out = Path(args.output)
