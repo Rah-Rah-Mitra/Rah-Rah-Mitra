@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="320" viewBox="0 0 1100 320" role="img" aria-labelledby="title desc">
+  <title id="title">Rahul Mitra geometric algebra banner</title>
+  <desc id="desc">Animated vectors and bivectors inspired by geometric algebra for computer science.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="320" rx="28" fill="url(#bg)"/>
+
+  <!-- Basis grid -->
+  <g stroke="#1e293b" stroke-width="1">
+    <path d="M80 40 V280 M180 40 V280 M280 40 V280 M380 40 V280"/>
+    <path d="M40 80 H420 M40 160 H420 M40 240 H420"/>
+  </g>
+
+  <!-- Vectors a and b -->
+  <g transform="translate(70,250)">
+    <line x1="0" y1="0" x2="220" y2="-120" stroke="#22d3ee" stroke-width="4" marker-end="url(#arrow)">
+      <animate attributeName="x2" values="170;220;170" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="y2" values="-80;-120;-80" dur="5s" repeatCount="indefinite"/>
+    </line>
+    <line x1="0" y1="0" x2="120" y2="-190" stroke="#a78bfa" stroke-width="4" marker-end="url(#arrow)">
+      <animate attributeName="x2" values="100;120;100" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="y2" values="-150;-190;-150" dur="5s" repeatCount="indefinite"/>
+    </line>
+    <polygon points="0,0 220,-120 120,-190" fill="#0ea5e955" stroke="#38bdf8">
+      <animate attributeName="points" dur="5s" repeatCount="indefinite"
+               values="0,0 170,-80 100,-150;0,0 220,-120 120,-190;0,0 170,-80 100,-150"/>
+    </polygon>
+    <text x="230" y="-118" fill="#7dd3fc" font-size="18">a</text>
+    <text x="126" y="-198" fill="#c4b5fd" font-size="18">b</text>
+    
+  </g>
+
+  <!-- Rotor ring -->
+  <g transform="translate(820,165)">
+    <circle cx="0" cy="0" r="85" fill="none" stroke="#334155" stroke-width="14"/>
+    <circle cx="0" cy="0" r="85" fill="none" stroke="url(#neon)" stroke-width="10" stroke-dasharray="120 420">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+    </circle>
+    <line x1="0" y1="0" x2="75" y2="0" stroke="#22d3ee" stroke-width="4" marker-end="url(#arrow)">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+    </line>
+    
+  </g>
+
+  <text x="550" y="78" text-anchor="middle" fill="#f8fafc" font-size="38" font-family="Segoe UI, Arial" font-weight="700">Rahul Mitra</text>
+  <text x="550" y="108" text-anchor="middle" fill="#93c5fd" font-size="17" font-family="Segoe UI, Arial">Cybersecurity · Software Engineering · Data Science</text>
+  
+</svg>

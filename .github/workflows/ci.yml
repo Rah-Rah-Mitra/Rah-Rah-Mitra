@@ -1,0 +1,30 @@
+name: README CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Lint scripts (compile)
+        run: python -m py_compile scripts/generate_stats_svg.py scripts/generate_contribution_3d_svg.py
+
+      - name: Regenerate SVG assets (offline-safe)
+        run: |
+          python scripts/generate_stats_svg.py --username Rah-Rah-Mitra --output assets/github-stats.svg --offline
+          python scripts/generate_contribution_3d_svg.py --username Rah-Rah-Mitra --output assets/contribution-3d.svg --offline
+
+      - name: Validate README references
+        run: |
+          rg -n "assets/github-stats.svg" README.md
+          rg -n "assets/contribution-3d.svg" README.md

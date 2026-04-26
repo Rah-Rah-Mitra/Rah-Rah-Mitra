@@ -1,0 +1,34 @@
+name: Update custom README stats
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate SVG stats card
+        run: |
+          python scripts/generate_stats_svg.py \
+            --username Rah-Rah-Mitra \
+            --output assets/github-stats.svg \
+            --token "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Commit updated stats
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore(readme): refresh custom github stats card'
+          file_pattern: assets/github-stats.svg
