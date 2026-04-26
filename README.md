@@ -1,17 +1,17 @@
 <div align="center">
-  <img src="assets/hero-geometry.svg?v=d151524e8b71" width="100%" alt="Custom geometric animated profile banner" />
+  <img src="assets/hero-geometry.svg?v=3baaea1b6031" width="100%" alt="Custom geometric animated profile banner" />
 </div>
 
 <p align="center">
-  <a href="https://github.com/Rah-Rah-Mitra"><img src="assets/link-github.svg?v=8a445bdfdc3b" height="52" alt="GitHub" /></a>
+  <a href="https://github.com/Rah-Rah-Mitra"><img src="assets/link-github.svg?v=07873c9a28c3" height="52" alt="GitHub" /></a>
   <a href="https://rahul-mitra.vercel.app/"><img src="assets/link-portfolio.svg?v=ee46677dc18a" height="52" alt="Portfolio" /></a>
   <a href="https://www.linkedin.com/in/rahulmitra-dev/"><img src="assets/link-linkedin.svg?v=697cc4ed3207" height="52" alt="LinkedIn" /></a>
 </p>
 
 <p align="center">
-  <img src="assets/contribution-3d.svg?v=e8845895bd65" width="100%" alt="3D contribution graph" />
+  <img src="assets/contribution-3d.svg?v=98ea9cbc5d45" width="100%" alt="3D contribution graph" />
 </p>
 
 <p align="center">
-  <img src="assets/github-stats.svg?v=e02a937e926b" width="100%" alt="Custom GitHub profile insights with geometric animation" />
+  <img src="assets/github-stats.svg?v=a9ecc21a547e" width="100%" alt="Custom GitHub profile insights with geometric animation" />
 </p>
