@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="320" viewBox="0 0 1100 320" role="img" aria-labelledby="title desc" font-family="Segoe UI, Arial, sans-serif">
   <title id="title">Rahul Mitra geometric algebra banner</title>
-  <desc id="desc">Animated vectors, grid lines, a rotor ring, profile summary, and curiosity quote for Rahul Mitra's GitHub profile.</desc>
+  <desc id="desc">Animated vectors, grid lines, a rotor ring, and curiosity quote for Rahul Mitra's GitHub profile.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#020617"/>
@@ -53,5 +53,4 @@
   <text x="565" y="118" text-anchor="middle" fill="#f8fafc" font-size="56" font-weight="800">Rahul Mitra</text>
   <text x="565" y="154" text-anchor="middle" fill="#93c5fd" font-size="18">Cybersecurity - Software Engineering - Data Science</text>
   <text x="565" y="188" text-anchor="middle" fill="#5eead4" font-size="18" font-style="italic" font-weight="700">&quot;Learning Only Stops when You Give Up Curiosity&quot;</text>
-  <text x="565" y="218" text-anchor="middle" fill="#cbd5e1" font-size="15" font-weight="600">NUS B.Eng. (Hons) in Industrial &amp; Systems Engineering / 2nd Major in CS / Minor in Math</text>
 </svg>
