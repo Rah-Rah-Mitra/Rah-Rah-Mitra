@@ -15,5 +15,5 @@ Fellow coder partaking in NUS B.Eng. (Hons) in Industrial & Systems Engineering,
 ## Profile Snapshot
 
 <p align="center">
-  <img src="assets/github-stats.svg?v=829c6c407982" width="100%" alt="Custom GitHub profile insights with geometric animation" />
+  <img src="assets/github-stats.svg?v=23f32d2e966e" width="100%" alt="Custom GitHub profile insights with geometric animation" />
 </p>

@@ -20,6 +20,15 @@ from github_profile_data import (
     owned_work_repos,
 )
 
+TECH_STACK_GROUPS = (
+    ("Systems", ("Rust", "Tokio", "Axum", "SQLx", "Rusqlite", "Clap")),
+    ("Python/API", ("Python", "FastAPI", "Pydantic", "aiohttp", "uv")),
+    ("AI/OCR/CV", ("OpenCV", "Pillow", "pypdfium2", "ONNX", "Ultralytics", "Hailo")),
+    ("Frontend", ("TypeScript", "React", "Vite", "Tailwind", "PostCSS")),
+    ("Data", ("Jupyter", "GeoPandas", "NetworkX", "Matplotlib", "NumPy")),
+    ("Tooling", ("Docker/Compose", "Shell", "PowerShell", "PlatformIO", "Arduino/C++")),
+)
+
 
 def summarize(
     username: str,
@@ -48,57 +57,89 @@ def summarize(
 
 def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offline: bool) -> str:
     name = escape(user.get("name") or username)
+    safe_username = escape(username)
 
-    rows = [
-        ("Followers", user.get("followers", 0)),
-        ("Owned Repos", metrics["owned_repos"]),
-        ("Total Stars", metrics["total_stars"]),
-        ("Contributions (year)", metrics["contributions"]),
-        ("Recent Pushes", metrics["recent_pushes"]),
-        ("Open Issues", metrics["total_issues"]),
+    metric_tiles = [
+        ("Followers", user.get("followers", 0), "#5eead4"),
+        ("Following", user.get("following", 0), "#67e8f9"),
+        ("Public Repos", user.get("public_repos", metrics["owned_repos"]), "#93c5fd"),
+        ("Owned Work", metrics["owned_repos"], "#a78bfa"),
+        ("Year Contributions", metrics["contributions"], "#5eead4"),
+        ("Recent Pushes", metrics["recent_pushes"], "#67e8f9"),
+        ("Stars", metrics["total_stars"], "#93c5fd"),
+        ("Forks", metrics["total_forks"], "#a78bfa"),
+        ("Open Issues", metrics["total_issues"], "#5eead4"),
     ]
 
-    row_svg = []
-    for i, (key, value) in enumerate(rows):
-        y = 126 + i * 28
-        row_svg.append(f'<text x="78" y="{y}" fill="#5eead4" font-size="19" font-weight="600">{key}:</text>')
-        row_svg.append(f'<text x="360" y="{y}" fill="#e2e8f0" font-size="19" font-weight="700">{value}</text>')
+    tile_svg = []
+    for i, (label, value, accent) in enumerate(metric_tiles):
+        col = i % 3
+        row = i // 3
+        x = 58 + col * 138
+        y = 166 + row * 68
+        tile_svg.append(
+            f'<g transform="translate({x} {y})">'
+            '<rect width="126" height="60" rx="10" fill="#0f172a" stroke="#334155" stroke-opacity="0.84"/>'
+            f'<text x="63" y="28" text-anchor="middle" fill="{accent}" font-size="24" font-weight="800">{_format_metric(value)}</text>'
+            f'<text x="63" y="48" text-anchor="middle" fill="#cbd5e1" font-size="11" font-weight="600">{escape(label)}</text>'
+            "</g>"
+        )
 
     note = "Offline preview" if offline else "Live profile snapshot"
     languages = escape(metrics["language_label"])
+    stack_svg = _build_stack_rows()
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="980" height="450" viewBox="0 0 980 450" role="img" aria-labelledby="title desc">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="460" viewBox="0 0 1100 460" role="img" aria-labelledby="title desc" font-family="Segoe UI, Arial, sans-serif">
   <title id="title">{name} GitHub stats</title>
-  <desc id="desc">Custom GitHub statistics card.</desc>
+  <desc id="desc">Custom GitHub snapshot and known technology stack.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#070b1a"/>
+      <stop offset="0%" stop-color="#020617"/>
       <stop offset="100%" stop-color="#111827"/>
     </linearGradient>
+    <linearGradient id="neon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
   </defs>
-  <rect width="980" height="450" rx="20" fill="url(#bg)"/>
+  <rect width="1100" height="460" rx="24" fill="url(#bg)"/>
 
-  <rect x="38" y="42" width="570" height="256" rx="12" fill="#181c31" stroke="#e5e7eb"/>
-  <rect x="624" y="42" width="318" height="256" rx="12" fill="#181c31" stroke="#e5e7eb"/>
-  <rect x="166" y="316" width="648" height="102" rx="10" fill="#181c31" stroke="#e5e7eb"/>
-  <line x1="490" y1="326" x2="490" y2="408" stroke="#334155" stroke-width="2"/>
+  <g stroke="#1e293b" stroke-width="1" opacity="0.56">
+    <path d="M70 64H1030M70 126H1030M70 188H1030M70 250H1030M70 312H1030M70 374H1030"/>
+    <path d="M110 42V408M230 42V408M350 42V408M470 42V408M590 42V408M710 42V408M830 42V408M950 42V408"/>
+  </g>
 
-  <text x="76" y="88" fill="#7fb0ff" font-size="30" font-weight="700">{name}'s GitHub Stats</text>
-  {''.join(row_svg)}
-  <text x="78" y="286" fill="#67e8f9" font-size="16">Top owned-work languages: {languages}</text>
+  <text x="34" y="48" fill="#e2e8f0" font-size="28" font-weight="700">Profile Snapshot</text>
+  <text x="34" y="78" fill="#93c5fd" font-size="16">{name} / @{safe_username}</text>
 
-  <text x="650" y="95" fill="#7fb0ff" font-size="28" font-weight="700">Signal</text>
-  <circle cx="783" cy="172" r="66" fill="none" stroke="#2b3f75" stroke-width="10"/>
-  <circle cx="783" cy="172" r="66" fill="none" stroke="#7fb0ff" stroke-width="10" stroke-linecap="round" stroke-dasharray="280 134">
-    <animateTransform attributeName="transform" type="rotate" from="0 783 172" to="360 783 172" dur="7s" repeatCount="indefinite"/>
-  </circle>
+  <g transform="translate(34 96)">
+    <rect width="448" height="292" rx="16" fill="#0f172a" stroke="url(#neon)" stroke-opacity="0.58">
+      <animate attributeName="stroke-opacity" values="0.38;0.78;0.38" dur="4.8s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <text x="58" y="124" fill="#e2e8f0" font-size="22" font-weight="700">GitHub Snapshot</text>
+  <text x="58" y="148" fill="#64748b" font-size="13">public activity, generated from GitHub</text>
+  {''.join(tile_svg)}
 
-  <text x="196" y="360" fill="#7fb0ff" font-size="44" font-weight="700">{metrics['contributions']}</text>
-  <text x="196" y="396" fill="#93c5fd" font-size="22">Total Contributions</text>
-  <text x="536" y="360" fill="#7fb0ff" font-size="44" font-weight="700">{metrics['total_stars']}</text>
-  <text x="536" y="396" fill="#93c5fd" font-size="22">Owned Repo Stars</text>
+  <g transform="translate(500 96)">
+    <rect width="566" height="292" rx="16" fill="#0f172a" stroke="url(#neon)" stroke-opacity="0.48">
+      <animate attributeName="stroke-opacity" values="0.32;0.7;0.32" dur="5.4s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <text x="526" y="124" fill="#e2e8f0" font-size="22" font-weight="700">Known Tech Stack</text>
+  <text x="526" y="148" fill="#64748b" font-size="13">curated from public repositories</text>
+  {stack_svg}
 
-  <text x="40" y="435" fill="#64748b" font-size="14">{note}</text>
+  <g transform="translate(34 406)">
+    <rect width="156" height="28" rx="14" fill="#052e2b" stroke="#22d3ee" opacity="0.92">
+      <animate attributeName="opacity" values="0.62;1;0.62" dur="2.2s" repeatCount="indefinite"/>
+    </rect>
+    <circle cx="15" cy="14" r="4" fill="#5eead4">
+      <animate attributeName="opacity" values="0.35;1;0.35" dur="1.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="28" y="18" fill="#d1fae5" font-size="12" font-weight="700">{escape(note)}</text>
+  </g>
+  <text x="220" y="424" fill="#64748b" font-size="13">Top repo languages: {languages}</text>
 </svg>
 '''
 
@@ -112,7 +153,7 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.offline:
-        user = {"name": args.username, "followers": 0}
+        user = {"name": args.username, "followers": 0, "following": 0, "public_repos": 0}
         metrics = {
             "owned_repos": 0,
             "total_stars": 0,
@@ -142,6 +183,43 @@ def main() -> int:
     out.write_text(svg, encoding="utf-8")
     print(f"Wrote {out}")
     return 0
+
+
+def _build_stack_rows() -> str:
+    rows = []
+    for row_index, (group, labels) in enumerate(TECH_STACK_GROUPS):
+        y = 166 + row_index * 36
+        rows.append(
+            f'<g transform="translate(526 {y})">'
+            f'<text x="0" y="15" fill="#5eead4" font-size="13" font-weight="700">{escape(group)}</text>'
+        )
+        x = 92
+        for label in labels:
+            width = _chip_width(label)
+            safe_label = escape(label)
+            rows.append(
+                f'<g transform="translate({x} 0)">'
+                f'<rect width="{width}" height="24" rx="12" fill="#111827" stroke="#334155" stroke-opacity="0.88">'
+                '<animate attributeName="stroke-opacity" values="0.42;0.95;0.42" dur="6s" repeatCount="indefinite"/>'
+                '</rect>'
+                f'<text x="{width / 2:.1f}" y="16" text-anchor="middle" fill="#cbd5e1" font-size="12" font-weight="600">{safe_label}</text>'
+                "</g>"
+            )
+            x += width + 8
+        rows.append("</g>")
+    return "".join(rows)
+
+
+def _chip_width(label: str) -> int:
+    return max(50, int(len(label) * 6.0) + 20)
+
+
+def _format_metric(value: Any) -> str:
+    if isinstance(value, int):
+        return f"{value:,}"
+    if isinstance(value, float) and value.is_integer():
+        return f"{int(value):,}"
+    return escape(str(value))
 
 
 if __name__ == "__main__":
