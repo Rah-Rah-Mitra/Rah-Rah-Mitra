@@ -24,13 +24,11 @@ All visuals are **self-hosted SVG assets** in this repository.
 
 ---
 
-## 📊 Custom Profile Insights (No README stat services)
+## 📊 Custom Profile Insights
 
 <p align="center">
   <img src="assets/github-stats.svg" width="100%" alt="Custom GitHub profile insights with geometric animation" />
 </p>
-
-This section intentionally avoids third-party README stat widgets. Instead, it uses custom SVG cards and optional local generation logic.
 
 ---
 
@@ -40,15 +38,3 @@ This section intentionally avoids third-party README stat widgets. Instead, it u
 - Backend & Platforms: Spring, Docker, Kubernetes, AWS
 - Data: MySQL, PostgreSQL, Redis, MongoDB
 - Tools: Git, IntelliJ IDEA, VS Code
-
----
-
-## 🔧 Optional Local Regeneration
-
-If you want to regenerate metrics into SVG yourself:
-
-```bash
-python3 scripts/generate_stats_svg.py --username Rah-Rah-Mitra --output assets/github-stats.svg
-```
-
-(Uses GitHub API directly; no external README stats tools.)
