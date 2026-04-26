@@ -26,9 +26,12 @@ jobs:
             --username Rah-Rah-Mitra \
             --output assets/github-stats.svg \
             --token "${{ secrets.GITHUB_TOKEN }}"
+          python scripts/generate_contribution_3d_svg.py \
+            --username Rah-Rah-Mitra \
+            --output assets/contribution-3d.svg
 
       - name: Commit updated stats
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore(readme): refresh custom github stats card'
-          file_pattern: assets/github-stats.svg
+          commit_message: 'chore(readme): refresh generated profile assets'
+          file_pattern: assets/github-stats.svg assets/contribution-3d.svg

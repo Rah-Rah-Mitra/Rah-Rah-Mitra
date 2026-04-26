@@ -26,5 +26,5 @@ jobs:
 
       - name: Validate README references
         run: |
-          rg -n "assets/github-stats.svg" README.md
-          rg -n "assets/contribution-3d.svg" README.md
+          grep -n "assets/github-stats.svg" README.md
+          grep -n "assets/contribution-3d.svg" README.md
