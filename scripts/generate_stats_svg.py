@@ -95,9 +95,9 @@ def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offl
 
     row_svg = []
     for i, (k, v) in enumerate(rows):
-        y = 146 + i * 34
-        row_svg.append(f'<text x="64" y="{y}" fill="#5eead4" font-size="20" font-weight="600">{k}:</text>')
-        row_svg.append(f'<text x="350" y="{y}" fill="#e2e8f0" font-size="20" font-weight="700">{v}</text>')
+        y = 126 + i * 28
+        row_svg.append(f'<text x="78" y="{y}" fill="#5eead4" font-size="19" font-weight="600">{k}:</text>')
+        row_svg.append(f'<text x="360" y="{y}" fill="#e2e8f0" font-size="19" font-weight="700">{v}</text>')
 
     note = "Offline preview" if offline else "Live profile snapshot"
 
@@ -111,26 +111,28 @@ def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offl
     </linearGradient>
   </defs>
   <rect width="980" height="450" rx="20" fill="url(#bg)"/>
-  <rect x="40" y="40" width="560" height="330" rx="12" fill="#181c31" stroke="#e5e7eb"/>
-  <rect x="615" y="72" width="325" height="196" rx="12" fill="#181c31" stroke="#e5e7eb"/>
-  <rect x="186" y="286" width="620" height="130" rx="10" fill="#181c31" stroke="#e5e7eb"/>
 
-  <text x="66" y="88" fill="#7fb0ff" font-size="40" font-weight="700">{name}'s GitHub Stats</text>
+  <rect x="38" y="42" width="570" height="256" rx="12" fill="#181c31" stroke="#e5e7eb"/>
+  <rect x="624" y="42" width="318" height="256" rx="12" fill="#181c31" stroke="#e5e7eb"/>
+  <rect x="166" y="316" width="648" height="102" rx="10" fill="#181c31" stroke="#e5e7eb"/>
+  <line x1="490" y1="326" x2="490" y2="408" stroke="#334155" stroke-width="2"/>
+
+  <text x="76" y="88" fill="#7fb0ff" font-size="30" font-weight="700">{name}'s GitHub Stats</text>
   {''.join(row_svg)}
-  <text x="64" y="360" fill="#67e8f9" font-size="17">Top languages: {metrics['language_label']}</text>
+  <text x="78" y="286" fill="#67e8f9" font-size="16">Top languages: {metrics['language_label']}</text>
 
-  <text x="640" y="120" fill="#7fb0ff" font-size="40" font-weight="700">Signal</text>
-  <circle cx="780" cy="182" r="63" fill="none" stroke="#2b3f75" stroke-width="10"/>
-  <circle cx="780" cy="182" r="63" fill="none" stroke="#7fb0ff" stroke-width="10" stroke-linecap="round" stroke-dasharray="280 120">
-    <animateTransform attributeName="transform" type="rotate" from="0 780 182" to="360 780 182" dur="7s" repeatCount="indefinite"/>
+  <text x="650" y="95" fill="#7fb0ff" font-size="28" font-weight="700">Signal</text>
+  <circle cx="783" cy="172" r="66" fill="none" stroke="#2b3f75" stroke-width="10"/>
+  <circle cx="783" cy="172" r="66" fill="none" stroke="#7fb0ff" stroke-width="10" stroke-linecap="round" stroke-dasharray="280 134">
+    <animateTransform attributeName="transform" type="rotate" from="0 783 172" to="360 783 172" dur="7s" repeatCount="indefinite"/>
   </circle>
 
-  <text x="214" y="340" fill="#7fb0ff" font-size="54" font-weight="700">{metrics['contributions']}</text>
-  <text x="214" y="384" fill="#93c5fd" font-size="30">Total Contributions</text>
-  <text x="560" y="340" fill="#7fb0ff" font-size="54" font-weight="700">{metrics['total_stars']}</text>
-  <text x="560" y="384" fill="#93c5fd" font-size="30">Total Stars</text>
+  <text x="196" y="360" fill="#7fb0ff" font-size="44" font-weight="700">{metrics['contributions']}</text>
+  <text x="196" y="396" fill="#93c5fd" font-size="22">Total Contributions</text>
+  <text x="536" y="360" fill="#7fb0ff" font-size="44" font-weight="700">{metrics['total_stars']}</text>
+  <text x="536" y="396" fill="#93c5fd" font-size="22">Total Stars</text>
 
-  <text x="40" y="432" fill="#64748b" font-size="14">{note}</text>
+  <text x="40" y="435" fill="#64748b" font-size="14">{note}</text>
 </svg>
 '''
 
