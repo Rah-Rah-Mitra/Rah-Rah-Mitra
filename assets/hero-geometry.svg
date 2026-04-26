@@ -23,21 +23,21 @@
     <path d="M70 284 350 52M190 292 470 52M310 292 590 52M430 292 710 52M550 292 830 52M670 292 950 52"/>
   </g>
 
-  <g transform="translate(78 262)">
-    <polygon points="0,0 150,-44 238,-112" fill="#0ea5e933" stroke="#38bdf8" stroke-width="2">
+  <g transform="translate(64 270)">
+    <polygon points="0,0 135,-38 218,-102" fill="#0ea5e933" stroke="#38bdf8" stroke-width="2">
       <animate attributeName="points" dur="6s" repeatCount="indefinite"
-        values="0,0 126,-36 212,-96;0,0 150,-44 238,-112;0,0 126,-36 212,-96"/>
+        values="0,0 112,-30 194,-88;0,0 135,-38 218,-102;0,0 112,-30 194,-88"/>
     </polygon>
-    <line x1="0" y1="0" x2="150" y2="-44" stroke="#22d3ee" stroke-width="4" marker-end="url(#arrow)">
-      <animate attributeName="x2" values="126;150;126" dur="6s" repeatCount="indefinite"/>
-      <animate attributeName="y2" values="-36;-44;-36" dur="6s" repeatCount="indefinite"/>
+    <line x1="0" y1="0" x2="135" y2="-38" stroke="#22d3ee" stroke-width="4" marker-end="url(#arrow)">
+      <animate attributeName="x2" values="112;135;112" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="y2" values="-30;-38;-30" dur="6s" repeatCount="indefinite"/>
     </line>
-    <line x1="0" y1="0" x2="238" y2="-112" stroke="#a78bfa" stroke-width="4" marker-end="url(#arrow)">
-      <animate attributeName="x2" values="212;238;212" dur="6s" repeatCount="indefinite"/>
-      <animate attributeName="y2" values="-96;-112;-96" dur="6s" repeatCount="indefinite"/>
+    <line x1="0" y1="0" x2="218" y2="-102" stroke="#a78bfa" stroke-width="4" marker-end="url(#arrow)">
+      <animate attributeName="x2" values="194;218;194" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="y2" values="-88;-102;-88" dur="6s" repeatCount="indefinite"/>
     </line>
-    <text x="162" y="-56" fill="#7dd3fc" font-size="18" font-family="Segoe UI, Arial">a</text>
-    <text x="250" y="-120" fill="#c4b5fd" font-size="18" font-family="Segoe UI, Arial">b</text>
+    <text x="146" y="-50" fill="#7dd3fc" font-size="18" font-family="Segoe UI, Arial">a</text>
+    <text x="230" y="-110" fill="#c4b5fd" font-size="18" font-family="Segoe UI, Arial">b</text>
   </g>
 
   <g transform="translate(962 160)">
@@ -50,7 +50,9 @@
     </line>
   </g>
 
-  <text x="565" y="118" text-anchor="middle" fill="#f8fafc" font-size="56" font-weight="800">Rahul Mitra</text>
-  <text x="565" y="154" text-anchor="middle" fill="#93c5fd" font-size="18">Cybersecurity - Software Engineering - Data Science</text>
-  <text x="565" y="188" text-anchor="middle" fill="#5eead4" font-size="18" font-style="italic" font-weight="700">&quot;Learning Only Stops when You Give Up Curiosity&quot;</text>
+  <g transform="translate(575 0)" text-anchor="middle">
+    <text y="120" fill="#f8fafc" font-size="56" font-weight="800">Rahul Mitra</text>
+    <text y="156" fill="#93c5fd" font-size="18">Cybersecurity - Software Engineering - Data Science</text>
+    <text y="190" fill="#5eead4" font-size="18" font-style="italic" font-weight="700">&quot;Learning Only Stops when You Give Up Curiosity&quot;</text>
+  </g>
 </svg>
