@@ -174,15 +174,14 @@ def build_month_labels(positioned: list[dict[str, object]]) -> list[str]:
         if current is None or int(item["row"]) > int(current["row"]):
             front_edge_by_col[col] = item
 
-    step = max(1, round(len(months) / 6))
-    selected = months[::step][:6]
+    selected = months[-12:] if len(months) > 12 else months
     labels = []
     for item in selected:
         parsed = item["parsed"]
         axis_point = front_edge_by_col.get(int(item["col"]), item)
         labels.append(
-            f'<text x="{fmt(float(axis_point["screen_x"]) + 8)}" y="{fmt(float(axis_point["screen_y"]) + 18)}" '
-            'fill="#64748b" font-size="11" text-anchor="middle">'
+            f'<text x="{fmt(float(axis_point["screen_x"]) + 7)}" y="{fmt(float(axis_point["screen_y"]) + 9)}" '
+            'fill="#64748b" font-size="9" text-anchor="middle">'
             f"{parsed.strftime('%b')}"
             "</text>"
         )
