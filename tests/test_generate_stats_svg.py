@@ -83,7 +83,8 @@ class StatsSvgTests(unittest.TestCase):
         self.assertIn("Rust", svg)
         self.assertIn("React", svg)
         self.assertIn("Docker/Compose", svg)
-        self.assertIn("Live profile snapshot", svg)
+        self.assertIn(">LIVE</text>", svg)
+        self.assertNotIn("Live profile snapshot", svg)
         self.assertNotIn("Signal", svg)
 
 

@@ -80,12 +80,12 @@ def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offl
         tile_svg.append(
             f'<g transform="translate({x} {y})">'
             '<rect width="126" height="60" rx="10" fill="#0f172a" stroke="#334155" stroke-opacity="0.84"/>'
-            f'<text x="63" y="28" text-anchor="middle" fill="{accent}" font-size="24" font-weight="800">{_format_metric(value)}</text>'
-            f'<text x="63" y="48" text-anchor="middle" fill="#cbd5e1" font-size="11" font-weight="600">{escape(label)}</text>'
+            f'<text x="63" y="30" text-anchor="middle" fill="{accent}" font-size="27" font-weight="800">{_format_metric(value)}</text>'
+            f'<text x="63" y="50" text-anchor="middle" fill="#cbd5e1" font-size="12" font-weight="600">{escape(label)}</text>'
             "</g>"
         )
 
-    note = "Offline preview" if offline else "Live profile snapshot"
+    live_label = "PREVIEW" if offline else "LIVE"
     languages = escape(metrics["language_label"])
     stack_svg = _build_stack_rows()
 
@@ -109,16 +109,16 @@ def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offl
     <path d="M110 42V408M230 42V408M350 42V408M470 42V408M590 42V408M710 42V408M830 42V408M950 42V408"/>
   </g>
 
-  <text x="34" y="48" fill="#e2e8f0" font-size="28" font-weight="700">Profile Snapshot</text>
-  <text x="34" y="78" fill="#93c5fd" font-size="16">{name} / @{safe_username}</text>
+  <text x="34" y="52" fill="#e2e8f0" font-size="32" font-weight="700">Profile Snapshot</text>
+  <text x="34" y="84" fill="#93c5fd" font-size="18">{name} / @{safe_username}</text>
 
   <g transform="translate(34 96)">
     <rect width="448" height="292" rx="16" fill="#0f172a" stroke="url(#neon)" stroke-opacity="0.58">
       <animate attributeName="stroke-opacity" values="0.38;0.78;0.38" dur="4.8s" repeatCount="indefinite"/>
     </rect>
   </g>
-  <text x="58" y="124" fill="#e2e8f0" font-size="22" font-weight="700">GitHub Snapshot</text>
-  <text x="58" y="148" fill="#64748b" font-size="13">public activity, generated from GitHub</text>
+  <text x="58" y="126" fill="#e2e8f0" font-size="24" font-weight="700">GitHub Snapshot</text>
+  <text x="58" y="151" fill="#64748b" font-size="14">public activity, generated from GitHub</text>
   {''.join(tile_svg)}
 
   <g transform="translate(500 96)">
@@ -126,20 +126,20 @@ def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offl
       <animate attributeName="stroke-opacity" values="0.32;0.7;0.32" dur="5.4s" repeatCount="indefinite"/>
     </rect>
   </g>
-  <text x="526" y="124" fill="#e2e8f0" font-size="22" font-weight="700">Known Tech Stack</text>
-  <text x="526" y="148" fill="#64748b" font-size="13">curated from public repositories</text>
+  <text x="526" y="126" fill="#e2e8f0" font-size="24" font-weight="700">Known Tech Stack</text>
+  <text x="526" y="151" fill="#64748b" font-size="14">curated from public repositories</text>
   {stack_svg}
 
   <g transform="translate(34 406)">
-    <rect width="156" height="28" rx="14" fill="#052e2b" stroke="#22d3ee" opacity="0.92">
+    <rect width="88" height="26" rx="13" fill="#052e2b" stroke="#22d3ee" opacity="0.92">
       <animate attributeName="opacity" values="0.62;1;0.62" dur="2.2s" repeatCount="indefinite"/>
     </rect>
-    <circle cx="15" cy="14" r="4" fill="#5eead4">
+    <circle cx="15" cy="13" r="4" fill="#5eead4">
       <animate attributeName="opacity" values="0.35;1;0.35" dur="1.4s" repeatCount="indefinite"/>
     </circle>
-    <text x="28" y="18" fill="#d1fae5" font-size="12" font-weight="700">{escape(note)}</text>
+    <text x="28" y="17" fill="#d1fae5" font-size="12" font-weight="700">{escape(live_label)}</text>
   </g>
-  <text x="220" y="424" fill="#64748b" font-size="13">Top repo languages: {languages}</text>
+  <text x="150" y="424" fill="#64748b" font-size="14">Top repo languages: {languages}</text>
 </svg>
 '''
 
@@ -191,7 +191,7 @@ def _build_stack_rows() -> str:
         y = 166 + row_index * 36
         rows.append(
             f'<g transform="translate(526 {y})">'
-            f'<text x="0" y="15" fill="#5eead4" font-size="13" font-weight="700">{escape(group)}</text>'
+            f'<text x="0" y="16" fill="#5eead4" font-size="14" font-weight="700">{escape(group)}</text>'
         )
         x = 92
         for label in labels:
@@ -202,7 +202,7 @@ def _build_stack_rows() -> str:
                 f'<rect width="{width}" height="24" rx="12" fill="#111827" stroke="#334155" stroke-opacity="0.88">'
                 '<animate attributeName="stroke-opacity" values="0.42;0.95;0.42" dur="6s" repeatCount="indefinite"/>'
                 '</rect>'
-                f'<text x="{width / 2:.1f}" y="16" text-anchor="middle" fill="#cbd5e1" font-size="12" font-weight="600">{safe_label}</text>'
+                f'<text x="{width / 2:.1f}" y="16.5" text-anchor="middle" fill="#cbd5e1" font-size="12.5" font-weight="600">{safe_label}</text>'
                 "</g>"
             )
             x += width + 8
@@ -211,7 +211,7 @@ def _build_stack_rows() -> str:
 
 
 def _chip_width(label: str) -> int:
-    return max(50, int(len(label) * 6.0) + 20)
+    return max(50, int(len(label) * 6.1) + 21)
 
 
 def _format_metric(value: Any) -> str:

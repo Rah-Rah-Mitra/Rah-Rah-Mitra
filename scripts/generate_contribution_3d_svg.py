@@ -91,12 +91,12 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
         bar_symbol(level, cell_w, cell_d, style[3], style[0], style[1], style[2]) for level, style in shades.items()
     )
     legend_items = []
-    lx, ly = 930, 66
+    lx, ly = 930, 68
     for level in range(5):
         top, _, _, _, label = shades[level]
         legend_items.append(
-            f'<rect x="{lx}" y="{ly + level * 22}" width="12" height="12" rx="3" fill="{top}"/>'
-            f'<text x="{lx + 19}" y="{ly + 10 + level * 22}" fill="#cbd5e1" font-size="11">{label}</text>'
+            f'<rect x="{lx}" y="{ly + level * 24}" width="14" height="14" rx="3" fill="{top}"/>'
+            f'<text x="{lx + 21}" y="{ly + 12 + level * 24}" fill="#cbd5e1" font-size="13">{label}</text>'
         )
 
     total = sum(cell.count for cell in cells)
@@ -117,13 +117,13 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
     {bar_defs}
   </defs>
   <rect width="1100" height="460" rx="24" fill="url(#bg)"/>
-  <text x="34" y="48" fill="#e2e8f0" font-size="28" font-weight="700">GitHub Contribution Graph - 3D Isometric View</text>
-  <text x="34" y="78" fill="#93c5fd" font-size="16">{safe_username}</text>
-  <text x="34" y="110" fill="#5eead4" font-size="18" font-weight="700">{total:,} contributions</text>
-  <text x="34" y="134" fill="#cbd5e1" font-size="14">{active_days} active days in the visible calendar</text>
-  <text x="34" y="158" fill="#64748b" font-size="13">{escape(date_range)}</text>
+  <text x="34" y="52" fill="#e2e8f0" font-size="32" font-weight="700">GitHub Contribution Graph - 3D Isometric View</text>
+  <text x="34" y="84" fill="#93c5fd" font-size="18">{safe_username}</text>
+  <text x="34" y="120" fill="#5eead4" font-size="22" font-weight="700">{total:,} contributions</text>
+  <text x="34" y="148" fill="#cbd5e1" font-size="16">{active_days} active days in the visible calendar</text>
+  <text x="34" y="174" fill="#64748b" font-size="15">{escape(date_range)}</text>
   <g transform="translate(34 398)">
-    <rect width="74" height="26" rx="13" fill="#052e2b" stroke="#22d3ee" opacity="0.92">
+    <rect width="88" height="26" rx="13" fill="#052e2b" stroke="#22d3ee" opacity="0.92">
       <animate attributeName="opacity" values="0.62;1;0.62" dur="2.2s" repeatCount="indefinite"/>
     </rect>
     <circle cx="15" cy="13" r="4" fill="#5eead4">
@@ -131,7 +131,7 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
     </circle>
     <text x="28" y="17" fill="#d1fae5" font-size="12" font-weight="700">{live_label}</text>
   </g>
-  <text x="930" y="50" fill="#93c5fd" font-size="13">Legend</text>
+  <text x="930" y="52" fill="#93c5fd" font-size="15">Legend</text>
   {''.join(legend_items)}
   <g id="contribution-graph">
     <animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 0" dur="8s" repeatCount="indefinite"/>
@@ -180,8 +180,8 @@ def build_month_labels(positioned: list[dict[str, object]]) -> list[str]:
         parsed = item["parsed"]
         axis_point = front_edge_by_col.get(int(item["col"]), item)
         labels.append(
-            f'<text x="{fmt(float(axis_point["screen_x"]) + 7)}" y="{fmt(float(axis_point["screen_y"]) + 9)}" '
-            'fill="#64748b" font-size="9" text-anchor="middle">'
+            f'<text x="{fmt(float(axis_point["screen_x"]) + 15)}" y="{fmt(float(axis_point["screen_y"]) + 24)}" '
+            'fill="#64748b" font-size="11" text-anchor="middle">'
             f"{parsed.strftime('%b')}"
             "</text>"
         )
