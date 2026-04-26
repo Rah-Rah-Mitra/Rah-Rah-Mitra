@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.parse
@@ -15,6 +16,8 @@ from pathlib import Path
 from typing import Any
 
 API_BASE = "https://api.github.com"
+CONTRIB_URL = "https://github.com/users/{username}/contributions"
+COUNT_RE = re.compile(r'data-count="(\d+)"')
 
 
 def _get_json(url: str, token: str | None = None) -> Any:
@@ -38,10 +41,7 @@ def fetch_repos(username: str, token: str | None = None) -> list[dict[str, Any]]
     repos: list[dict[str, Any]] = []
     page = 1
     while True:
-        url = (
-            f"{API_BASE}/users/{urllib.parse.quote(username)}/repos"
-            f"?type=owner&sort=updated&per_page=100&page={page}"
-        )
+        url = f"{API_BASE}/users/{urllib.parse.quote(username)}/repos?type=owner&sort=updated&per_page=100&page={page}"
         batch = _get_json(url, token)
         if not batch:
             return repos
@@ -51,125 +51,116 @@ def fetch_repos(username: str, token: str | None = None) -> list[dict[str, Any]]
         page += 1
 
 
-def summarize(repos: list[dict[str, Any]]) -> dict[str, Any]:
-    public_repos = len(repos)
-    total_stars = sum(repo.get("stargazers_count", 0) for repo in repos)
-    total_forks = sum(repo.get("forks_count", 0) for repo in repos)
+def fetch_events(username: str, token: str | None = None) -> list[dict[str, Any]]:
+    return _get_json(f"{API_BASE}/users/{urllib.parse.quote(username)}/events/public?per_page=100", token)
 
+
+def fetch_contributions_total(username: str) -> int:
+    req = urllib.request.Request(CONTRIB_URL.format(username=username), headers={"User-Agent": "stats-card"})
+    with urllib.request.urlopen(req, timeout=30) as response:
+        text = response.read().decode("utf-8")
+    return sum(int(v) for v in COUNT_RE.findall(text))
+
+
+def summarize(repos: list[dict[str, Any]], events: list[dict[str, Any]], contributions: int) -> dict[str, Any]:
     language_counter = Counter(repo.get("language") for repo in repos if repo.get("language"))
     top_languages = language_counter.most_common(3)
-    language_label = " · ".join(f"{lang} ({count})" for lang, count in top_languages) or "N/A"
-
-    top_repo = max(repos, key=lambda r: r.get("stargazers_count", 0), default=None)
-    top_repo_label = "N/A"
-    if top_repo:
-        top_repo_label = f"{top_repo['name']} ★{top_repo.get('stargazers_count', 0)}"
+    recent_commits = 0
+    for ev in events:
+        if ev.get("type") == "PushEvent":
+            recent_commits += len(ev.get("payload", {}).get("commits", []))
 
     return {
-        "public_repos": public_repos,
-        "total_stars": total_stars,
-        "total_forks": total_forks,
-        "language_label": language_label,
-        "top_repo_label": top_repo_label,
+        "public_repos": len(repos),
+        "total_stars": sum(repo.get("stargazers_count", 0) for repo in repos),
+        "total_forks": sum(repo.get("forks_count", 0) for repo in repos),
+        "total_issues": sum(repo.get("open_issues_count", 0) for repo in repos),
+        "language_label": " · ".join(f"{lang} ({count})" for lang, count in top_languages) or "N/A",
+        "contributions": contributions,
+        "recent_commits": recent_commits,
     }
 
 
 def build_svg(username: str, user: dict[str, Any], metrics: dict[str, Any], offline: bool) -> str:
     name = user.get("name") or username
-    followers = user.get("followers", 0)
-    following = user.get("following", 0)
 
-    cards = [
-        ("Followers", str(followers), "80", "190"),
-        ("Following", str(following), "300", "190"),
-        ("Public Repos", str(metrics["public_repos"]), "520", "190"),
-        ("Total Stars", str(metrics["total_stars"]), "80", "300"),
-        ("Total Forks", str(metrics["total_forks"]), "300", "300"),
+    rows = [
+        ("Followers", user.get("followers", 0)),
+        ("Public Repos", metrics["public_repos"]),
+        ("Total Stars", metrics["total_stars"]),
+        ("Contributions (year)", metrics["contributions"]),
+        ("Recent Commits", metrics["recent_commits"]),
+        ("Open Issues", metrics["total_issues"]),
     ]
 
-    card_svg = []
-    for i, (title, value, x, y) in enumerate(cards):
-        delay = i * 0.15
-        card_svg.append(
-            f'''<g transform="translate({x},{y})" opacity="0">\
-<animate attributeName="opacity" from="0" to="1" begin="{delay}s" dur="0.6s" fill="freeze"/>\
-<rect width="190" height="90" rx="14" fill="#111827" stroke="#334155"/>\
-<text x="18" y="32" fill="#93c5fd" font-size="14">{title}</text>\
-<text x="18" y="66" fill="#e2e8f0" font-size="30" font-weight="700">{value}</text>\
-</g>'''
-        )
+    row_svg = []
+    for i, (k, v) in enumerate(rows):
+        y = 146 + i * 34
+        row_svg.append(f'<text x="64" y="{y}" fill="#5eead4" font-size="20" font-weight="600">{k}:</text>')
+        row_svg.append(f'<text x="350" y="{y}" fill="#e2e8f0" font-size="20" font-weight="700">{v}</text>')
 
-    note = "Offline preview values" if offline else "Live values from GitHub API"
+    note = "Offline preview" if offline else "Live profile snapshot"
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="800" height="430" viewBox="0 0 800 430" role="img" aria-labelledby="title desc">
-  <title id="title">{name}'s Custom GitHub Stats</title>
-  <desc id="desc">Animated geometric GitHub summary card generated from GitHub API data.</desc>
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="980" height="450" viewBox="0 0 980 450" role="img" aria-labelledby="title desc">
+  <title id="title">{name} GitHub stats</title>
+  <desc id="desc">Custom GitHub statistics card.</desc>
   <defs>
-    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#020617"/>
-      <stop offset="100%" stop-color="#0f172a"/>
-    </linearGradient>
-    <linearGradient id="line" x1="0" x2="1" y1="0" y2="0">
-      <stop offset="0%" stop-color="#22d3ee"/>
-      <stop offset="100%" stop-color="#a78bfa"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070b1a"/>
+      <stop offset="100%" stop-color="#111827"/>
     </linearGradient>
   </defs>
+  <rect width="980" height="450" rx="20" fill="url(#bg)"/>
+  <rect x="40" y="40" width="560" height="330" rx="12" fill="#181c31" stroke="#e5e7eb"/>
+  <rect x="615" y="72" width="325" height="196" rx="12" fill="#181c31" stroke="#e5e7eb"/>
+  <rect x="186" y="286" width="620" height="130" rx="10" fill="#181c31" stroke="#e5e7eb"/>
 
-  <rect width="800" height="430" rx="22" fill="url(#bg)"/>
+  <text x="66" y="88" fill="#7fb0ff" font-size="40" font-weight="700">{name}'s GitHub Stats</text>
+  {''.join(row_svg)}
+  <text x="64" y="360" fill="#67e8f9" font-size="17">Top languages: {metrics['language_label']}</text>
 
-  <g opacity="0.4">
-    <polygon points="0,70 110,0 250,0 100,95" fill="#0b1222">
-      <animate attributeName="points" dur="8s" repeatCount="indefinite"
-        values="0,70 110,0 250,0 100,95;0,50 125,0 250,0 120,105;0,70 110,0 250,0 100,95"/>
-    </polygon>
-    <polygon points="800,360 675,430 560,430 700,335" fill="#101a33">
-      <animate attributeName="points" dur="10s" repeatCount="indefinite"
-        values="800,360 675,430 560,430 700,335;800,340 660,430 540,430 685,320;800,360 675,430 560,430 700,335"/>
-    </polygon>
-  </g>
+  <text x="640" y="120" fill="#7fb0ff" font-size="40" font-weight="700">Signal</text>
+  <circle cx="780" cy="182" r="63" fill="none" stroke="#2b3f75" stroke-width="10"/>
+  <circle cx="780" cy="182" r="63" fill="none" stroke="#7fb0ff" stroke-width="10" stroke-linecap="round" stroke-dasharray="280 120">
+    <animateTransform attributeName="transform" type="rotate" from="0 780 182" to="360 780 182" dur="7s" repeatCount="indefinite"/>
+  </circle>
 
-  <polyline points="40,120 760,120" stroke="url(#line)" stroke-width="2" stroke-dasharray="6 6" fill="none">
-    <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="2s" repeatCount="indefinite"/>
-  </polyline>
+  <text x="214" y="340" fill="#7fb0ff" font-size="54" font-weight="700">{metrics['contributions']}</text>
+  <text x="214" y="384" fill="#93c5fd" font-size="30">Total Contributions</text>
+  <text x="560" y="340" fill="#7fb0ff" font-size="54" font-weight="700">{metrics['total_stars']}</text>
+  <text x="560" y="384" fill="#93c5fd" font-size="30">Total Stars</text>
 
-  <text x="40" y="62" fill="#38bdf8" font-size="16" letter-spacing="1.5">RAH-RAH-MITRA • LIVE PROFILE SNAPSHOT</text>
-  <text x="40" y="98" fill="#f8fafc" font-size="34" font-weight="700">{name}</text>
-  <text x="40" y="145" fill="#cbd5e1" font-size="16">Top languages: {metrics['language_label']}</text>
-  <text x="40" y="170" fill="#cbd5e1" font-size="16">Top starred repo: {metrics['top_repo_label']}</text>
-  <text x="560" y="400" fill="#64748b" font-size="12">{note}</text>
-
-  {''.join(card_svg)}
+  <text x="40" y="432" fill="#64748b" font-size="14">{note}</text>
 </svg>
 '''
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate custom GitHub stats SVG")
-    parser.add_argument("--username", required=True, help="GitHub username")
-    parser.add_argument("--output", required=True, help="Output SVG path")
-    parser.add_argument(
-        "--token",
-        default=os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN"),
-        help="GitHub token (optional, improves API rate limit)",
-    )
-    parser.add_argument("--offline", action="store_true", help="Generate placeholder card without API calls")
+    parser.add_argument("--username", required=True)
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--token", default=os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN"))
+    parser.add_argument("--offline", action="store_true")
     args = parser.parse_args()
 
-    offline = args.offline
-    if offline:
-        user = {"name": args.username, "followers": 0, "following": 0}
+    if args.offline:
+        user = {"name": args.username, "followers": 0}
         metrics = {
             "public_repos": 0,
             "total_stars": 0,
             "total_forks": 0,
+            "total_issues": 0,
             "language_label": "N/A",
-            "top_repo_label": "N/A",
+            "contributions": 0,
+            "recent_commits": 0,
         }
     else:
         try:
             user = fetch_user(args.username, args.token)
             repos = fetch_repos(args.username, args.token)
-            metrics = summarize(repos)
+            events = fetch_events(args.username, args.token)
+            contribs = fetch_contributions_total(args.username)
+            metrics = summarize(repos, events, contribs)
         except urllib.error.HTTPError as exc:
             print(f"GitHub API request failed: HTTP {exc.code}", file=sys.stderr)
             return 1
@@ -177,12 +168,11 @@ def main() -> int:
             print(f"GitHub API request failed: {exc.reason}", file=sys.stderr)
             return 1
 
-    svg = build_svg(args.username, user, metrics, offline)
-
-    output_path = Path(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(svg, encoding="utf-8")
-    print(f"Wrote {output_path}")
+    svg = build_svg(args.username, user, metrics, args.offline)
+    out = Path(args.output)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(svg, encoding="utf-8")
+    print(f"Wrote {out}")
     return 0
 
 

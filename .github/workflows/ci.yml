@@ -3,7 +3,6 @@ name: README CI
 on:
   pull_request:
   push:
-    branches: ["**"]
 
 jobs:
   validate:
@@ -17,8 +16,15 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Regenerate custom card
-        run: python scripts/generate_stats_svg.py --username Rah-Rah-Mitra --output assets/github-stats.svg
+      - name: Lint scripts (compile)
+        run: python -m py_compile scripts/generate_stats_svg.py scripts/generate_contribution_3d_svg.py
 
-      - name: Ensure README references custom card
-        run: rg -n "assets/github-stats.svg" README.md
+      - name: Regenerate SVG assets (offline-safe)
+        run: |
+          python scripts/generate_stats_svg.py --username Rah-Rah-Mitra --output assets/github-stats.svg --offline
+          python scripts/generate_contribution_3d_svg.py --username Rah-Rah-Mitra --output assets/contribution-3d.svg --offline
+
+      - name: Validate README references
+        run: |
+          rg -n "assets/github-stats.svg" README.md
+          rg -n "assets/contribution-3d.svg" README.md
