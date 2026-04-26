@@ -6,29 +6,23 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from datetime import date
 from html import escape
 from pathlib import Path
 
 from github_profile_data import ContributionCell, ContributionFetchError, fetch_contribution_snapshot
 
 
-def iso_bar(
-    x: float,
-    y: float,
-    w: float,
-    d: float,
-    h: float,
-    color_top: str,
-    color_left: str,
-    color_right: str,
-) -> str:
-    top = f"{x},{y-h} {x+w},{y-h-d*0.55} {x+w+d},{y-h} {x+d},{y-h+d*0.55}"
-    left = f"{x},{y-h} {x+d},{y-h+d*0.55} {x+d},{y+d*0.55} {x},{y}"
-    right = f"{x+d},{y-h+d*0.55} {x+w+d},{y-h} {x+w+d},{y} {x+d},{y+d*0.55}"
+def bar_symbol(level: int, w: float, d: float, h: float, color_top: str, color_left: str, color_right: str) -> str:
+    top = f"0,{-h} {w},{-h-d*0.55} {w+d},{-h} {d},{-h+d*0.55}"
+    left = f"0,{-h} {d},{-h+d*0.55} {d},{d*0.55} 0,0"
+    right = f"{d},{-h+d*0.55} {w+d},{-h} {w+d},0 {d},{d*0.55}"
     return (
+        f'<g id="bar-{level}">'
         f'<polygon points="{left}" fill="{color_left}"/>'
         f'<polygon points="{right}" fill="{color_right}"/>'
         f'<polygon points="{top}" fill="{color_top}"/>'
+        "</g>"
     )
 
 
@@ -67,6 +61,8 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
                 "right": right,
                 "col": col,
                 "row": row,
+                "level": cell.level,
+                "date": cell.date,
             }
         )
 
@@ -82,32 +78,32 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
     origin_y = (height - graph_h) / 2 - min_y + 26
 
     bars = []
+    positioned = []
     for bar in sorted(geom, key=lambda item: (item["y"], item["x"])):
+        x = origin_x + bar["x"]
+        y = origin_y + bar["y"]
+        positioned.append({**bar, "screen_x": x, "screen_y": y})
         bars.append(
-            iso_bar(
-                origin_x + bar["x"],
-                origin_y + bar["y"],
-                cell_w,
-                cell_d,
-                bar["height"],
-                bar["top"],
-                bar["left"],
-                bar["right"],
-            )
+            f'<use href="#bar-{bar["level"]}" transform="translate({fmt(x)} {fmt(y)})"/>'
         )
 
+    bar_defs = "".join(
+        bar_symbol(level, cell_w, cell_d, style[3], style[0], style[1], style[2]) for level, style in shades.items()
+    )
     legend_items = []
-    lx, ly = 820, 118
+    lx, ly = 784, 72
     for level in range(5):
         top, _, _, _, label = shades[level]
         legend_items.append(
-            f'<rect x="{lx}" y="{ly + level * 28}" width="16" height="16" rx="4" fill="{top}"/>'
-            f'<text x="{lx + 24}" y="{ly + 13 + level * 28}" fill="#cbd5e1" font-size="13">{label}</text>'
+            f'<rect x="{lx}" y="{ly + level * 22}" width="12" height="12" rx="3" fill="{top}"/>'
+            f'<text x="{lx + 19}" y="{ly + 10 + level * 22}" fill="#cbd5e1" font-size="11">{label}</text>'
         )
 
     total = sum(cell.count for cell in cells)
     active_days = sum(1 for cell in cells if cell.count > 0 or cell.level > 0)
-    note = "Offline preview" if offline else f"Live GitHub contribution snapshot via {source}"
+    date_range = visible_date_range(cells)
+    month_labels = build_month_labels(positioned)
+    live_label = "PREVIEW" if offline else "LIVE"
     safe_username = escape(username)
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="460" viewBox="0 0 1100 460" role="img" aria-labelledby="title desc">
@@ -118,18 +114,77 @@ def build_svg(username: str, cells: list[ContributionCell], offline: bool, sourc
       <stop offset="0%" stop-color="#020617"/>
       <stop offset="100%" stop-color="#111827"/>
     </linearGradient>
+    {bar_defs}
   </defs>
   <rect width="1100" height="460" rx="24" fill="url(#bg)"/>
   <text x="34" y="48" fill="#e2e8f0" font-size="28" font-weight="700">GitHub Contribution Graph - 3D Isometric View</text>
   <text x="34" y="78" fill="#93c5fd" font-size="16">{safe_username}</text>
   <text x="34" y="110" fill="#5eead4" font-size="18" font-weight="700">{total:,} contributions</text>
   <text x="34" y="134" fill="#cbd5e1" font-size="14">{active_days} active days in the visible calendar</text>
-  <text x="820" y="94" fill="#93c5fd" font-size="15">Legend</text>
+  <text x="34" y="158" fill="#64748b" font-size="13">{escape(date_range)}</text>
+  <g transform="translate(988 34)">
+    <rect width="74" height="26" rx="13" fill="#052e2b" stroke="#22d3ee" opacity="0.92">
+      <animate attributeName="opacity" values="0.62;1;0.62" dur="2.2s" repeatCount="indefinite"/>
+    </rect>
+    <circle cx="15" cy="13" r="4" fill="#5eead4">
+      <animate attributeName="opacity" values="0.35;1;0.35" dur="1.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="28" y="17" fill="#d1fae5" font-size="12" font-weight="700">{live_label}</text>
+  </g>
+  <text x="784" y="56" fill="#93c5fd" font-size="13">Legend</text>
   {''.join(legend_items)}
-  <text x="34" y="430" fill="#64748b" font-size="13">{escape(note)}</text>
-  {''.join(bars)}
+  <g id="month-labels">{''.join(month_labels)}</g>
+  <g id="contribution-bars">
+    <animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 0" dur="8s" repeatCount="indefinite"/>
+    {''.join(bars)}
+  </g>
 </svg>
 '''
+
+
+def fmt(value: float) -> str:
+    return f"{value:.1f}".rstrip("0").rstrip(".")
+
+
+def visible_date_range(cells: list[ContributionCell]) -> str:
+    dates = [parsed for cell in cells if (parsed := parse_date(cell.date))]
+    if not dates:
+        return "Generated contribution preview"
+    start = min(dates)
+    end = max(dates)
+    return f"{start.strftime('%b %d, %Y')} - {end.strftime('%b %d, %Y')}"
+
+
+def build_month_labels(positioned: list[dict[str, object]]) -> list[str]:
+    first_by_month: dict[tuple[int, int], dict[str, object]] = {}
+    for item in sorted(positioned, key=lambda value: str(value["date"])):
+        parsed = parse_date(str(item["date"]))
+        if parsed is None:
+            continue
+        first_by_month.setdefault((parsed.year, parsed.month), {**item, "parsed": parsed})
+
+    months = list(first_by_month.values())
+    if not months:
+        return []
+
+    step = max(1, round(len(months) / 6))
+    selected = months[::step][:6]
+    labels = []
+    for index, item in enumerate(selected):
+        parsed = item["parsed"]
+        labels.append(
+            f'<text x="{34 + index * 55}" y="184" fill="#64748b" font-size="11">'
+            f"{parsed.strftime('%b')}"
+            "</text>"
+        )
+    return labels
+
+
+def parse_date(value: str) -> date | None:
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
 
 
 def offline_cells() -> list[ContributionCell]:
