@@ -50,7 +50,7 @@
     </line>
   </g>
 
-  <g transform="translate(575 0)" text-anchor="middle">
+  <g transform="translate(575 8)" text-anchor="middle">
     <text y="120" fill="#f8fafc" font-size="56" font-weight="800">Rahul Mitra</text>
     <text y="156" fill="#93c5fd" font-size="18">Cybersecurity - Software Engineering - Data Science</text>
     <text y="190" fill="#5eead4" font-size="18" font-style="italic" font-weight="700">&quot;Learning Only Stops when You Give Up Curiosity&quot;</text>

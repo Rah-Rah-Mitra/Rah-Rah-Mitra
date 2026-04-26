@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="236" height="52" viewBox="0 0 236 52" role="img" aria-labelledby="title desc" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="52" viewBox="0 0 256 52" role="img" aria-labelledby="title desc" font-family="Segoe UI, Arial, sans-serif">
   <title id="title">GitHub link button</title>
   <desc id="desc">Animated button linking to Rahul Mitra's GitHub profile.</desc>
   <defs>
@@ -11,11 +11,11 @@
       <stop offset="100%" stop-color="#a78bfa"/>
     </linearGradient>
   </defs>
-  <rect x="1" y="1" width="234" height="50" rx="15" fill="url(#bg)" stroke="url(#neon)" stroke-width="2" stroke-opacity="0.76">
+  <rect x="1" y="1" width="254" height="50" rx="15" fill="url(#bg)" stroke="url(#neon)" stroke-width="2" stroke-opacity="0.76">
     <animate attributeName="stroke-opacity" values="0.48;0.95;0.48" dur="4.8s" repeatCount="indefinite"/>
   </rect>
   <g stroke="#1e293b" stroke-width="1" opacity="0.62">
-    <path d="M18 14H218M18 38H218M58 8V44M124 8V44M190 8V44"/>
+    <path d="M18 14H238M18 38H238M58 8V44M126 8V44M206 8V44"/>
   </g>
   <g transform="translate(28 16)" fill="none" stroke="#5eead4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M3 10c0-5 4-9 9-9s9 4 9 9c0 4-2 7-6 8"/>
@@ -23,5 +23,5 @@
     <path d="M8 20h8"/>
   </g>
   <text x="72" y="31" fill="#e2e8f0" font-size="17" font-weight="800">GitHub</text>
-  <text x="139" y="31" fill="#93c5fd" font-size="12" font-weight="700">@Rah-Rah-Mitra</text>
+  <text x="142" y="31" fill="#93c5fd" font-size="12" font-weight="700">@Rah-Rah-Mitra</text>
 </svg>
