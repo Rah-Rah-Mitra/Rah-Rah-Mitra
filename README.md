@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/hero-geometry.svg" width="100%" alt="Geometric algebra inspired animated profile banner" />
+  <img src="assets/hero-geometry.svg" width="100%" alt="Custom geometric animated profile banner" />
 </div>
 
 ## 👋 Hi, I'm Rahul Mitra
@@ -12,19 +12,17 @@ I build at the intersection of **Cybersecurity**, **Software Engineering**, and 
 
 ---
 
-## 🧠 Geometric Algebra Theme
+## 📊 Contributions (3D Geometry Render)
 
-This profile theme uses animated geometric ideas commonly taught in geometric algebra for computer science:
+<p align="center">
+  <img src="assets/contribution-3d.svg" width="100%" alt="3D contribution graph" />
+</p>
 
-- **Outer product** `a ∧ b` represented as an oriented area (bivector)
-- **Rotor rotation** `v' = R v R⁻¹`, with `R = e^(-Bθ/2)`
-- **Geometric invariants** for orientation, graphics, and robotics intuition
-
-All visuals are **self-hosted SVG assets** in this repository.
+This custom graph is rendered as a local SVG and can represent contribution intensity in a 3D isometric grid.
 
 ---
 
-## 📊 Custom Profile Insights
+## 📈 Custom Profile Insights
 
 <p align="center">
   <img src="assets/github-stats.svg" width="100%" alt="Custom GitHub profile insights with geometric animation" />
