@@ -6,13 +6,13 @@ Fellow coder partaking in NUS B.Eng. (Hons) in Industrial & Systems Engineering,
 
 [GitHub](https://github.com/Rah-Rah-Mitra) | [Portfolio](https://rahul-mitra.vercel.app/) | [LinkedIn](https://www.linkedin.com/in/rahulmitra-dev/)
 
-## Contributions
+##
 
 <p align="center">
   <img src="assets/contribution-3d.svg?v=57e184aa8e95" width="100%" alt="3D contribution graph" />
 </p>
 
-## Profile Snapshot
+##
 
 <p align="center">
   <img src="assets/github-stats.svg?v=7b080f100b5d" width="100%" alt="Custom GitHub profile insights with geometric animation" />
