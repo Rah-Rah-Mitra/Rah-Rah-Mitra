@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <img src="assets/contribution-3d.svg?v=dd2c98322ec2" width="100%" alt="3D contribution graph" />
+  <img src="assets/contribution-3d.svg?v=7fca29dbaa63" width="100%" alt="3D contribution graph" />
 </p>
 
 <p align="center">
-  <img src="assets/github-stats.svg?v=f582cdddf679" width="100%" alt="Custom GitHub profile insights with geometric animation" />
+  <img src="assets/github-stats.svg?v=063cb0392ea2" width="100%" alt="Custom GitHub profile insights with geometric animation" />
 </p>
