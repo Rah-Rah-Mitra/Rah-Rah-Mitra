@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/contribution-3d.svg?v=cd8fbb7c7de5" width="100%" alt="3D contribution graph" />
+  <img src="assets/contribution-3d.svg?v=e104787bfd68" width="100%" alt="3D contribution graph" />
 </p>
 
 <p align="center">
