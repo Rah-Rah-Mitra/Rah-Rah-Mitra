@@ -13,5 +13,5 @@
 </p>
 
 <p align="center">
-  <img src="assets/github-stats.svg?v=f0ac6cbee55a" width="100%" alt="Custom GitHub profile insights with geometric animation" />
+  <img src="assets/github-stats.svg?v=3d0b952903f2" width="100%" alt="Custom GitHub profile insights with geometric animation" />
 </p>
